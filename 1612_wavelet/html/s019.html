@@ -1,0 +1,271 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>s019</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-12"><meta name="DC.source" content="s019.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">&#25968;&#25454;&#23548;&#20837;</a></li><li><a href="#3">&#21442;&#25968;&#23545;&#35805;&#26694;&#35774;&#32622;</a></li><li><a href="#4">cheby1&#20302;&#36890;&#28388;&#27874;</a></li><li><a href="#5">&#20449;&#21495;&#37325;&#37319;&#26679;</a></li><li><a href="#6">&#23567;&#27874;&#21464;&#25442;&#21442;&#25968;&#35774;&#32622;</a></li><li><a href="#7">&#32472;&#22270;&#35774;&#32622;</a></li></ul></div><pre class="codeinput"><span class="comment">% &#39064;&#30446;&#65306;&#23548;&#27874;&#27979;&#35797;&#20449;&#21495;&#30340;&#23567;&#27874;&#26102;&#39057;&#35889;&#20998;&#26512;</span>
+<span class="comment">% &#21151;&#33021;&#65306;</span>
+<span class="comment">%       csv&#25968;&#25454;&#23548;&#20837;</span>
+<span class="comment">%       cheby1&#20302;&#36890;&#28388;&#27874;</span>
+<span class="comment">%       &#20449;&#21495;&#38477;&#20302;&#37319;&#26679;</span>
+<span class="comment">%       &#23567;&#27874;&#20998;&#26512;&#12289;&#20998;&#36776;&#29575;&#35774;&#32622;</span>
+<span class="comment">%       &#26102;&#39057;&#22270;&#32472;&#21046;</span>
+<span class="comment">% &#20316;&#32773;&#65306;&#39532;&#39563;&#65292;&#19969;&#26122;&#38738;</span>
+<span class="comment">% &#35843;&#29992;&#31243;&#24207;&#65306;</span>
+<span class="comment">%       tools.m</span>
+<span class="comment">% 2016.12.12 @HIT</span>
+</pre><h2>&#25968;&#25454;&#23548;&#20837;<a name="2"></a></h2><pre class="codeinput">clc,clear
+close <span class="string">all</span>
+
+[M,dt] = tools.getcsv();                                                        <span class="comment">% &#35835;&#20837;csv&#20449;&#21495;&#21644;&#37319;&#26679;&#21608;&#26399;dt</span>
+fs = 1/dt;                                                                      <span class="comment">% &#37319;&#26679;&#39057;&#29575;</span>
+
+t   = M(:,1);                                                                   <span class="comment">% &#31532;&#19968;&#21015;&#65292;&#26102;&#38388;</span>
+t   = t - t(1);                                                                 <span class="comment">% &#20943;&#21435;&#21021;&#22987;&#20540;</span>
+inp = M(:,2);                                                                   <span class="comment">% &#31532;&#20108;&#21015;&#65292;&#36755;&#20837;&#20449;&#21495;</span>
+out = M(:,3);                                                                   <span class="comment">% &#31532;&#19977;&#21015;&#65292;&#36755;&#20986;&#20449;&#21495;</span>
+inp = tools.clean(inp,0.015);                                                   <span class="comment">% &#20449;&#21495;&#21435;&#22343;&#20540;</span>
+out = tools.clean(out);
+
+figure                                                                          <span class="comment">% &#26102;&#31243;&#20449;&#21495;&#32472;&#22270;</span>
+plot([t,t]*1e6,[inp,out])
+tools.xyt({<span class="string">'t /\mu s'</span>,<span class="string">'Voltage/V'</span>,<span class="string">'&#21407;&#22987;&#21457;&#23556;&#19982;&#25509;&#25910;&#26102;&#31243;'</span>})
+legend({<span class="string">'&#21407;&#22987;&#21457;&#23556;&#20449;&#21495;'</span>,<span class="string">'&#21407;&#22987;&#25509;&#25910;&#20449;&#21495;'</span>})
+</pre><img vspace="5" hspace="5" src="s019_01.png" alt=""> <h2>&#21442;&#25968;&#23545;&#35805;&#26694;&#35774;&#32622;<a name="3"></a></h2><pre class="codeinput">prompt0 = {                                                         <span class="comment">% &#23545;&#35805;&#26694;&#21442;&#25968;</span>
+    <span class="string">'&#20302;&#36890;&#28388;&#27874;&#65306;&#24102;&#36890;&#39057;&#29575; kHz'</span>, 500
+    <span class="string">'&#20302;&#36890;&#28388;&#27874;&#65306;&#24102;&#38459;&#39057;&#29575; kHz'</span>, 700
+    <span class="string">'&#24403;&#21069;&#37319;&#26679;&#39057;&#29575; fs0 kHz'</span>, fs/1e3
+    <span class="string">'&#38477;&#20302;&#37319;&#26679;&#20493;&#25968; q'</span>, 10
+    <span class="string">'&#23567;&#27874;&#31867;&#22411;'</span>,<span class="string">'Morl'</span>
+    <span class="string">'&#23610;&#24230;&#24207;&#21015;&#30340;&#38271;&#24230;totalscal'</span>,2048
+    <span class="string">'&#39057;&#29575;&#26174;&#31034;&#33539;&#22260; kHz'</span>,[0 600]
+
+};
+
+dlg0.title = <span class="string">'&#26102;&#39057;&#20998;&#26512;&#21442;&#25968;&#35774;&#32622;'</span>;
+dlg0.save = <span class="string">'s17'</span>;
+para = tools.paradlg(prompt0,dlg0);
+
+para_lp.f1 = para{1}*1e3;                                                       <span class="comment">% &#20302;&#36890;&#28388;&#27874;&#21442;&#25968;&#35774;&#32622;</span>
+para_lp.f3 = para{2}*1e3;
+para_lp.rp = 0.1;
+para_lp.rs = 30;
+para_lp.fs = fs;
+para_lp.type = 1;                                                               <span class="comment">% &#28388;&#27874;&#22120;&#31867;&#22411;&#65306;&#20999;&#27604;&#38634;&#22827;-1</span>
+
+p = 1;
+q = para{4};                                                                    <span class="comment">% &#38477;&#20302;&#37319;&#26679;&#30340;&#20493;&#25968;</span>
+wavename = para{5};                                                             <span class="comment">% &#23567;&#27874;&#31867;&#22411;&#35774;&#32622;</span>
+totalscal = para{6};                                                            <span class="comment">% &#23610;&#24230;&#24207;&#21015;&#30340;&#38271;&#24230;&#65292;&#21363;scal&#30340;&#38271;&#24230;</span>
+fzk_lim = para{7};                                                              <span class="comment">% &#26102;&#39057;&#22270;&#26174;&#31034;&#30340;&#39057;&#29575;&#33539;&#22260;</span>
+</pre><h2>cheby1&#20302;&#36890;&#28388;&#27874;<a name="4"></a></h2><pre class="codeinput">out = tools.lowp(out,para_lp);                                                  <span class="comment">% &#36755;&#20986;&#20449;&#21495;&#20302;&#36890;&#28388;&#27874;</span>
+<span class="comment">% inp = tools.lowp(inp,para_lp);                                                % &#28388;&#27874;</span>
+</pre><img vspace="5" hspace="5" src="s019_02.png" alt=""> <h2>&#20449;&#21495;&#37325;&#37319;&#26679;<a name="5"></a></h2><pre class="codeinput">inp2 = resample(inp,p,q);                                                       <span class="comment">% &#21457;&#23556;&#20449;&#21495;&#37325;&#37319;&#26679;</span>
+out2 = resample(out,p,q);                                                       <span class="comment">% &#25509;&#25910;&#20449;&#21495;&#37325;&#37319;&#26679;</span>
+t2 = (0:length(out2)-1)*dt*q/p;                                                 <span class="comment">% &#26102;&#38388;&#24207;&#21015;&#38656;&#35201;&#25163;&#21160;&#35745;&#31639;&#65292;&#19981;&#21487;&#37325;&#37319;&#26679;</span>
+t2 = t2';
+fs2 = fs/q;                                                                     <span class="comment">% &#37325;&#37319;&#26679;&#39057;&#29575;</span>
+
+figure                                                                          <span class="comment">% &#26102;&#31243;&#20449;&#21495;&#32472;&#22270;</span>
+plot([t2,t2]*1e6,[inp2,out2])
+tools.xyt({<span class="string">'t /\mu s'</span>,<span class="string">'Voltage/V'</span>,<span class="string">'&#37325;&#37319;&#26679;&#21457;&#23556;&#20449;&#21495;&#19982;&#25509;&#25910;&#20449;&#21495;&#26102;&#31243;'</span>})
+legend({<span class="string">'&#21457;&#23556;&#20449;&#21495;'</span>,<span class="string">'&#25509;&#25910;&#20449;&#21495;'</span>})
+</pre><img vspace="5" hspace="5" src="s019_03.png" alt=""> <h2>&#23567;&#27874;&#21464;&#25442;&#21442;&#25968;&#35774;&#32622;<a name="6"></a></h2><pre class="codeinput">wcf = centfrq(wavename);                                                        <span class="comment">% &#23567;&#27874;&#30340;&#20013;&#24515;&#39057;&#29575;</span>
+cparam = 2*wcf*totalscal;                                                       <span class="comment">% &#20026;&#24471;&#21040;&#21512;&#36866;&#30340;&#23610;&#24230;&#25152;&#27714;&#20986;&#30340;&#21442;&#25968;</span>
+a = totalscal:-1:0.2;
+scal = cparam./a;                                                               <span class="comment">% &#24471;&#21040;&#21508;&#20010;&#23610;&#24230;&#65292;&#20197;&#20351;&#36716;&#25442;&#24471;&#21040;&#39057;&#29575;&#24207;&#21015;&#20026;&#31561;&#24046;&#24207;&#21015;</span>
+
+tic
+coefs=cwt(out2,scal,wavename);                                                  <span class="comment">% &#24471;&#21040;&#23567;&#27874;&#31995;&#25968;</span>
+f=scal2frq(scal,wavename,1/fs2);                                                <span class="comment">% &#23558;&#23610;&#24230;&#36716;&#25442;&#20026;&#39057;&#29575;</span>
+fk = f/1e3;                                                                     <span class="comment">% &#39057;&#29575;&#65292;kHz</span>
+toc                                                                             <span class="comment">% &#35745;&#31639;&#35745;&#26102;</span>
+</pre><pre class="codeoutput">Elapsed time is 2.115746 seconds.
+</pre><img vspace="5" hspace="5" src="s019_04.png" alt=""> <h2>&#32472;&#22270;&#35774;&#32622;<a name="7"></a></h2><pre class="codeinput">figure
+subplot(4,1,1)                                                                  <span class="comment">% &#26102;&#31243;&#20449;&#21495;&#32472;&#22270;</span>
+plot([t2,t2]*1e6,[inp2,out2])
+tools.xyt({<span class="string">'t /\mu s'</span>,<span class="string">'Voltage/V'</span>,<span class="string">'&#21457;&#23556;&#20449;&#21495;&#19982;&#25509;&#25910;&#20449;&#21495;&#26102;&#31243;'</span>})
+legend({<span class="string">'&#21457;&#23556;&#20449;&#21495;'</span>,<span class="string">'&#25509;&#25910;&#20449;&#21495;'</span>})
+
+subplot(4,1,[2 3 4])                                                            <span class="comment">% &#21344;&#29992;&#23376;&#22270;&#20301;&#32622;</span>
+imagesc(t2*1e6,fk,abs(coefs));                                                  <span class="comment">% &#32472;&#21046;&#33394;&#35889;&#22270;</span>
+colorbar(<span class="string">'east'</span>);                                                               <span class="comment">% &#33394;&#26465;&#22312;&#22352;&#26631;&#36724;&#20869;&#37096;&#26174;&#31034;&#65292;&#20197;&#20415;&#23545;&#40784;</span>
+tools.xyt({<span class="string">'&#26102;&#38388; t/s'</span>,<span class="string">'&#39057;&#29575; f/kHz'</span>,<span class="string">'&#23567;&#27874;&#26102;&#39057;&#22270;'</span>})
+ylim(fzk_lim)                                                                   <span class="comment">% &#39057;&#22495;&#26174;&#31034;&#33539;&#22260;&#35774;&#32622;</span>
+set(gca, <span class="string">'YDir'</span>, <span class="string">'normal'</span>)
+tools.white;
+</pre><img vspace="5" hspace="5" src="s019_05.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% 题目：导波测试信号的小波时频谱分析
+% 功能：
+%       csv数据导入
+%       cheby1低通滤波
+%       信号降低采样
+%       小波分析、分辨率设置
+%       时频图绘制
+% 作者：马骋，丁昊青
+% 调用程序：
+%       tools.m
+% 2016.12.12 @HIT
+
+%% 数据导入
+
+clc,clear
+close all
+
+[M,dt] = tools.getcsv();                                                        % 读入csv信号和采样周期dt
+fs = 1/dt;                                                                      % 采样频率
+
+t   = M(:,1);                                                                   % 第一列，时间
+t   = t - t(1);                                                                 % 减去初始值
+inp = M(:,2);                                                                   % 第二列，输入信号
+out = M(:,3);                                                                   % 第三列，输出信号
+inp = tools.clean(inp,0.015);                                                   % 信号去均值
+out = tools.clean(out);
+
+figure                                                                          % 时程信号绘图
+plot([t,t]*1e6,[inp,out]) 
+tools.xyt({'t /\mu s','Voltage/V','原始发射与接收时程'})
+legend({'原始发射信号','原始接收信号'})
+
+%% 参数对话框设置
+
+prompt0 = {                                                         % 对话框参数
+    '低通滤波：带通频率 kHz', 500
+    '低通滤波：带阻频率 kHz', 700
+    '当前采样频率 fs0 kHz', fs/1e3
+    '降低采样倍数 q', 10
+    '小波类型','Morl'
+    '尺度序列的长度totalscal',2048
+    '频率显示范围 kHz',[0 600]
+    
+};
+
+dlg0.title = '时频分析参数设置';
+dlg0.save = 's17';
+para = tools.paradlg(prompt0,dlg0);
+
+para_lp.f1 = para{1}*1e3;                                                       % 低通滤波参数设置
+para_lp.f3 = para{2}*1e3;
+para_lp.rp = 0.1;
+para_lp.rs = 30;
+para_lp.fs = fs;
+para_lp.type = 1;                                                               % 滤波器类型：切比雪夫-1
+
+p = 1;
+q = para{4};                                                                    % 降低采样的倍数
+wavename = para{5};                                                             % 小波类型设置
+totalscal = para{6};                                                            % 尺度序列的长度，即scal的长度
+fzk_lim = para{7};                                                              % 时频图显示的频率范围
+
+%% cheby1低通滤波
+
+out = tools.lowp(out,para_lp);                                                  % 输出信号低通滤波
+% inp = tools.lowp(inp,para_lp);                                                % 滤波
+
+%% 信号重采样
+
+inp2 = resample(inp,p,q);                                                       % 发射信号重采样
+out2 = resample(out,p,q);                                                       % 接收信号重采样
+t2 = (0:length(out2)-1)*dt*q/p;                                                 % 时间序列需要手动计算，不可重采样
+t2 = t2';
+fs2 = fs/q;                                                                     % 重采样频率
+
+figure                                                                          % 时程信号绘图
+plot([t2,t2]*1e6,[inp2,out2]) 
+tools.xyt({'t /\mu s','Voltage/V','重采样发射信号与接收信号时程'})
+legend({'发射信号','接收信号'})
+
+%% 小波变换参数设置
+
+wcf = centfrq(wavename);                                                        % 小波的中心频率
+cparam = 2*wcf*totalscal;                                                       % 为得到合适的尺度所求出的参数
+a = totalscal:-1:0.2; 
+scal = cparam./a;                                                               % 得到各个尺度，以使转换得到频率序列为等差序列
+
+tic
+coefs=cwt(out2,scal,wavename);                                                  % 得到小波系数
+f=scal2frq(scal,wavename,1/fs2);                                                % 将尺度转换为频率
+fk = f/1e3;                                                                     % 频率，kHz
+toc                                                                             % 计算计时
+
+%% 绘图设置
+
+figure
+subplot(4,1,1)                                                                  % 时程信号绘图
+plot([t2,t2]*1e6,[inp2,out2]) 
+tools.xyt({'t /\mu s','Voltage/V','发射信号与接收信号时程'})
+legend({'发射信号','接收信号'})
+
+subplot(4,1,[2 3 4])                                                            % 占用子图位置
+imagesc(t2*1e6,fk,abs(coefs));                                                  % 绘制色谱图
+colorbar('east');                                                               % 色条在坐标轴内部显示，以便对齐
+tools.xyt({'时间 t/s','频率 f/kHz','小波时频图'})
+ylim(fzk_lim)                                                                   % 频域显示范围设置
+set(gca, 'YDir', 'normal')
+tools.white;
+##### SOURCE END #####
+--></body></html>
