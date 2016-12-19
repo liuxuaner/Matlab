@@ -1,8 +1,12 @@
 % 题目: 低通滤波示例
-% 参数: 无
+% 参数: 
+% 		带通频率 f-pass(kHz)
+% 		带阻频率 f-stop(kHz)
+% 		passband ripple in decibels Rp
+% 		衰减值Rs
 % 功能：
 %       低通去噪
-% 函数：
+% 调用：
 %       tools   -- 信号处理辅助函数
 % 作者: 马骋
 % 2016.04.21 @HIT
