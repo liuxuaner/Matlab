@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>s019</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-12"><meta name="DC.source" content="s019.m"><style type="text/css">
+      --><title>demo_wavelet</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-21"><meta name="DC.source" content="demo_wavelet.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,16 +66,21 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">&#25968;&#25454;&#23548;&#20837;</a></li><li><a href="#3">&#21442;&#25968;&#23545;&#35805;&#26694;&#35774;&#32622;</a></li><li><a href="#4">cheby1&#20302;&#36890;&#28388;&#27874;</a></li><li><a href="#5">&#20449;&#21495;&#37325;&#37319;&#26679;</a></li><li><a href="#6">&#23567;&#27874;&#21464;&#25442;&#21442;&#25968;&#35774;&#32622;</a></li><li><a href="#7">&#32472;&#22270;&#35774;&#32622;</a></li></ul></div><pre class="codeinput"><span class="comment">% &#39064;&#30446;&#65306;&#23548;&#27874;&#27979;&#35797;&#20449;&#21495;&#30340;&#23567;&#27874;&#26102;&#39057;&#35889;&#20998;&#26512;</span>
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">&#25968;&#25454;&#23548;&#20837;</a></li><li><a href="#3">&#21442;&#25968;&#23545;&#35805;&#26694;&#35774;&#32622;</a></li><li><a href="#4">cheby1&#20302;&#36890;&#28388;&#27874;</a></li><li><a href="#5">&#20449;&#21495;&#37325;&#37319;&#26679;</a></li><li><a href="#6">&#23567;&#27874;&#21464;&#25442;&#21442;&#25968;&#35774;&#32622;</a></li><li><a href="#7">&#32472;&#22270;&#35774;&#32622;</a></li></ul></div><pre class="codeinput"><span class="comment">% &#39064;&#30446;: &#23548;&#27874;&#27979;&#35797;&#20449;&#21495;&#30340;&#23567;&#27874;&#26102;&#39057;&#35889;&#20998;&#26512;</span>
+<span class="comment">% &#21442;&#25968;:</span>
+<span class="comment">% 		&#38477;&#20302;&#37319;&#26679;&#20493;&#25968; q</span>
+<span class="comment">% 		&#23567;&#27874;&#31867;&#22411;</span>
+<span class="comment">% 		&#23610;&#24230;&#24207;&#21015;&#30340;&#38271;&#24230;totalscal</span>
+<span class="comment">% 		&#39057;&#29575;&#26174;&#31034;&#33539;&#22260; kHz</span>
 <span class="comment">% &#21151;&#33021;&#65306;</span>
 <span class="comment">%       csv&#25968;&#25454;&#23548;&#20837;</span>
 <span class="comment">%       cheby1&#20302;&#36890;&#28388;&#27874;</span>
 <span class="comment">%       &#20449;&#21495;&#38477;&#20302;&#37319;&#26679;</span>
 <span class="comment">%       &#23567;&#27874;&#20998;&#26512;&#12289;&#20998;&#36776;&#29575;&#35774;&#32622;</span>
 <span class="comment">%       &#26102;&#39057;&#22270;&#32472;&#21046;</span>
+<span class="comment">% &#35843;&#29992;&#65306;</span>
+<span class="comment">%       tools   -- &#20449;&#21495;&#22788;&#29702;&#36741;&#21161;&#20989;&#25968;</span>
 <span class="comment">% &#20316;&#32773;&#65306;&#39532;&#39563;&#65292;&#19969;&#26122;&#38738;</span>
-<span class="comment">% &#35843;&#29992;&#31243;&#24207;&#65306;</span>
-<span class="comment">%       tools.m</span>
 <span class="comment">% 2016.12.12 @HIT</span>
 </pre><h2>&#25968;&#25454;&#23548;&#20837;<a name="2"></a></h2><pre class="codeinput">clc,clear
 close <span class="string">all</span>
@@ -94,7 +99,7 @@ figure                                                                          
 plot([t,t]*1e6,[inp,out])
 tools.xyt({<span class="string">'t /\mu s'</span>,<span class="string">'Voltage/V'</span>,<span class="string">'&#21407;&#22987;&#21457;&#23556;&#19982;&#25509;&#25910;&#26102;&#31243;'</span>})
 legend({<span class="string">'&#21407;&#22987;&#21457;&#23556;&#20449;&#21495;'</span>,<span class="string">'&#21407;&#22987;&#25509;&#25910;&#20449;&#21495;'</span>})
-</pre><img vspace="5" hspace="5" src="s019_01.png" alt=""> <h2>&#21442;&#25968;&#23545;&#35805;&#26694;&#35774;&#32622;<a name="3"></a></h2><pre class="codeinput">prompt0 = {                                                         <span class="comment">% &#23545;&#35805;&#26694;&#21442;&#25968;</span>
+</pre><img vspace="5" hspace="5" src="demo_wavelet_01.png" alt=""> <h2>&#21442;&#25968;&#23545;&#35805;&#26694;&#35774;&#32622;<a name="3"></a></h2><pre class="codeinput">prompt0 = {                                                         <span class="comment">% &#23545;&#35805;&#26694;&#21442;&#25968;</span>
     <span class="string">'&#20302;&#36890;&#28388;&#27874;&#65306;&#24102;&#36890;&#39057;&#29575; kHz'</span>, 500
     <span class="string">'&#20302;&#36890;&#28388;&#27874;&#65306;&#24102;&#38459;&#39057;&#29575; kHz'</span>, 700
     <span class="string">'&#24403;&#21069;&#37319;&#26679;&#39057;&#29575; fs0 kHz'</span>, fs/1e3
@@ -123,7 +128,7 @@ totalscal = para{6};                                                            
 fzk_lim = para{7};                                                              <span class="comment">% &#26102;&#39057;&#22270;&#26174;&#31034;&#30340;&#39057;&#29575;&#33539;&#22260;</span>
 </pre><h2>cheby1&#20302;&#36890;&#28388;&#27874;<a name="4"></a></h2><pre class="codeinput">out = tools.lowp(out,para_lp);                                                  <span class="comment">% &#36755;&#20986;&#20449;&#21495;&#20302;&#36890;&#28388;&#27874;</span>
 <span class="comment">% inp = tools.lowp(inp,para_lp);                                                % &#28388;&#27874;</span>
-</pre><img vspace="5" hspace="5" src="s019_02.png" alt=""> <h2>&#20449;&#21495;&#37325;&#37319;&#26679;<a name="5"></a></h2><pre class="codeinput">inp2 = resample(inp,p,q);                                                       <span class="comment">% &#21457;&#23556;&#20449;&#21495;&#37325;&#37319;&#26679;</span>
+</pre><img vspace="5" hspace="5" src="demo_wavelet_02.png" alt=""> <h2>&#20449;&#21495;&#37325;&#37319;&#26679;<a name="5"></a></h2><pre class="codeinput">inp2 = resample(inp,p,q);                                                       <span class="comment">% &#21457;&#23556;&#20449;&#21495;&#37325;&#37319;&#26679;</span>
 out2 = resample(out,p,q);                                                       <span class="comment">% &#25509;&#25910;&#20449;&#21495;&#37325;&#37319;&#26679;</span>
 t2 = (0:length(out2)-1)*dt*q/p;                                                 <span class="comment">% &#26102;&#38388;&#24207;&#21015;&#38656;&#35201;&#25163;&#21160;&#35745;&#31639;&#65292;&#19981;&#21487;&#37325;&#37319;&#26679;</span>
 t2 = t2';
@@ -133,7 +138,7 @@ figure                                                                          
 plot([t2,t2]*1e6,[inp2,out2])
 tools.xyt({<span class="string">'t /\mu s'</span>,<span class="string">'Voltage/V'</span>,<span class="string">'&#37325;&#37319;&#26679;&#21457;&#23556;&#20449;&#21495;&#19982;&#25509;&#25910;&#20449;&#21495;&#26102;&#31243;'</span>})
 legend({<span class="string">'&#21457;&#23556;&#20449;&#21495;'</span>,<span class="string">'&#25509;&#25910;&#20449;&#21495;'</span>})
-</pre><img vspace="5" hspace="5" src="s019_03.png" alt=""> <h2>&#23567;&#27874;&#21464;&#25442;&#21442;&#25968;&#35774;&#32622;<a name="6"></a></h2><pre class="codeinput">wcf = centfrq(wavename);                                                        <span class="comment">% &#23567;&#27874;&#30340;&#20013;&#24515;&#39057;&#29575;</span>
+</pre><img vspace="5" hspace="5" src="demo_wavelet_03.png" alt=""> <h2>&#23567;&#27874;&#21464;&#25442;&#21442;&#25968;&#35774;&#32622;<a name="6"></a></h2><pre class="codeinput">wcf = centfrq(wavename);                                                        <span class="comment">% &#23567;&#27874;&#30340;&#20013;&#24515;&#39057;&#29575;</span>
 cparam = 2*wcf*totalscal;                                                       <span class="comment">% &#20026;&#24471;&#21040;&#21512;&#36866;&#30340;&#23610;&#24230;&#25152;&#27714;&#20986;&#30340;&#21442;&#25968;</span>
 a = totalscal:-1:0.2;
 scal = cparam./a;                                                               <span class="comment">% &#24471;&#21040;&#21508;&#20010;&#23610;&#24230;&#65292;&#20197;&#20351;&#36716;&#25442;&#24471;&#21040;&#39057;&#29575;&#24207;&#21015;&#20026;&#31561;&#24046;&#24207;&#21015;</span>
@@ -143,8 +148,8 @@ coefs=cwt(out2,scal,wavename);                                                  
 f=scal2frq(scal,wavename,1/fs2);                                                <span class="comment">% &#23558;&#23610;&#24230;&#36716;&#25442;&#20026;&#39057;&#29575;</span>
 fk = f/1e3;                                                                     <span class="comment">% &#39057;&#29575;&#65292;kHz</span>
 toc                                                                             <span class="comment">% &#35745;&#31639;&#35745;&#26102;</span>
-</pre><pre class="codeoutput">Elapsed time is 2.115746 seconds.
-</pre><img vspace="5" hspace="5" src="s019_04.png" alt=""> <h2>&#32472;&#22270;&#35774;&#32622;<a name="7"></a></h2><pre class="codeinput">figure
+</pre><pre class="codeoutput">Elapsed time is 2.044374 seconds.
+</pre><h2>&#32472;&#22270;&#35774;&#32622;<a name="7"></a></h2><pre class="codeinput">figure
 subplot(4,1,1)                                                                  <span class="comment">% &#26102;&#31243;&#20449;&#21495;&#32472;&#22270;</span>
 plot([t2,t2]*1e6,[inp2,out2])
 tools.xyt({<span class="string">'t /\mu s'</span>,<span class="string">'Voltage/V'</span>,<span class="string">'&#21457;&#23556;&#20449;&#21495;&#19982;&#25509;&#25910;&#20449;&#21495;&#26102;&#31243;'</span>})
@@ -157,19 +162,25 @@ tools.xyt({<span class="string">'&#26102;&#38388; t/s'</span>,<span class="strin
 ylim(fzk_lim)                                                                   <span class="comment">% &#39057;&#22495;&#26174;&#31034;&#33539;&#22260;&#35774;&#32622;</span>
 set(gca, <span class="string">'YDir'</span>, <span class="string">'normal'</span>)
 tools.white;
-</pre><img vspace="5" hspace="5" src="s019_05.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="demo_wavelet_04.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
-% 题目：导波测试信号的小波时频谱分析
+% 题目: 导波测试信号的小波时频谱分析
+% 参数: 
+% 		降低采样倍数 q
+% 		小波类型
+% 		尺度序列的长度totalscal
+% 		频率显示范围 kHz
 % 功能：
 %       csv数据导入
 %       cheby1低通滤波
 %       信号降低采样
 %       小波分析、分辨率设置
 %       时频图绘制
+% 调用：
+%       tools   REPLACE_WITH_DASH_DASH 信号处理辅助函数
 % 作者：马骋，丁昊青
-% 调用程序：
-%       tools.m
 % 2016.12.12 @HIT
+
 
 %% 数据导入
 
