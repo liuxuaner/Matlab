@@ -1,0 +1,236 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demo_strainEnergy</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-21"><meta name="DC.source" content="demo_strainEnergy.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">&#24377;&#24615;&#21442;&#25968;&#35745;&#31639;</a></li><li><a href="#3">&#35835;&#21462;&#20301;&#31227;&#22352;&#26631;</a></li><li><a href="#4">&#24212;&#21464;&#19982;&#24212;&#21464;&#33021;&#35745;&#31639;</a></li><li><a href="#5">&#24212;&#21464;&#33021;&#21344;&#27604;&#20998;&#26512;</a></li><li><a href="#6">&#24212;&#21464;&#33021;&#32472;&#22270;</a></li></ul></div><pre class="codeinput"><span class="comment">% &#39064;&#30446;: T002-&#23548;&#27874;&#27169;&#24577;&#30340;&#24212;&#21464;&#33021;&#20998;&#26512;</span>
+<span class="comment">% &#21442;&#25968;: &#26080;</span>
+<span class="comment">% &#21151;&#33021;&#65306;</span>
+<span class="comment">%       &#35835;&#21462;fig&#25991;&#20214;</span>
+<span class="comment">%       &#25552;&#21462;&#20301;&#31227;&#26354;&#32447;&#25968;&#25454;</span>
+<span class="comment">%       &#27714;&#35299;&#24212;&#21464;&#12289;&#24212;&#21464;&#33021;</span>
+<span class="comment">%       &#24635;&#33021;&#37327;&#31215;&#20998;&#12289;&#33021;&#37327;&#27604;&#20363;&#20998;&#26512;&#19982;&#32472;&#22270;</span>
+<span class="comment">% &#35843;&#29992;&#65306;</span>
+<span class="comment">%       tools   -- &#20449;&#21495;&#22788;&#29702;&#36741;&#21161;&#20989;&#25968;</span>
+<span class="comment">% &#20316;&#32773;&#65306;&#39532;&#39563;</span>
+<span class="comment">% 2016.12.21 @HIT</span>
+</pre><h2>&#24377;&#24615;&#21442;&#25968;&#35745;&#31639;<a name="2"></a></h2><pre class="codeinput">clc,clear,close <span class="string">all</span>
+E = 208e9;                                                                      <span class="comment">% &#24377;&#24615;&#27169;&#37327;-&#38050;&#31563;</span>
+nu = 0.29;                                                                      <span class="comment">% &#27850;&#26494;&#27604;-&#38050;&#31563;</span>
+
+mu = E/(2*(1+nu));                                                              <span class="comment">% shear modulus</span>
+lambda = nu*E/((1+nu)*(1-2*nu));                                                <span class="comment">% Lame constant</span>
+
+E2 = 19.89e9;                                                                   <span class="comment">% &#24377;&#24615;&#27169;&#37327;-&#28151;&#20957;&#22303;</span>
+nu2 = 0.1923;                                                                   <span class="comment">% &#27850;&#26494;&#27604;-&#28151;&#20957;&#22303;</span>
+
+mu2 = E2/(2*(1+nu2));                                                           <span class="comment">% shear modulus</span>
+lambda2 = nu2*E2/((1+nu2)*(1-2*nu2));                                           <span class="comment">% Lame constant</span>
+
+r0 = 6;                                                                         <span class="comment">% &#38050;&#31563;&#30452;&#24452;</span>
+</pre><h2>&#35835;&#21462;&#20301;&#31227;&#22352;&#26631;<a name="3"></a></h2><pre class="codeinput">fig = open(tools.getfile);                                                      <span class="comment">% &#25171;&#24320;fig&#25991;&#20214;</span>
+
+h=findobj(gca,<span class="string">'Type'</span>,<span class="string">'Line'</span>);                                                   <span class="comment">% &#25552;&#21462;&#26354;&#32447;&#25968;&#25454;&#23545;&#35937;</span>
+x = get(h,<span class="string">'xdata'</span>);                                                             <span class="comment">% &#22352;&#26631;&#25968;&#25454;cell&#25968;&#25454;</span>
+y = get(h,<span class="string">'ydata'</span>);
+
+ur = x{6};                                                                      <span class="comment">% ur</span>
+uz = x{5};                                                                      <span class="comment">% uz</span>
+rvect = y{5};                                                                   <span class="comment">% &#20301;&#31227;&#20301;&#32622;&#21521;&#37327;</span>
+rvect0 = rvect(1:end-1);                                                        <span class="comment">% &#24212;&#21464;&#20301;&#32622;&#21521;&#37327;</span>
+
+<span class="comment">% &#20301;&#31227;&#26354;&#32447;&#30830;&#35748;</span>
+figure                                                                          <span class="comment">% &#27169;&#24577;&#39564;&#35777;</span>
+hold <span class="string">on</span>
+plot(ur,rvect,uz,rvect);
+legend({<span class="string">'ur'</span>,<span class="string">'uz'</span>})
+tools.xline([0 6],<span class="string">'r-.'</span>)
+</pre><img vspace="5" hspace="5" src="demo_strainEnergy_01.png" alt=""> <img vspace="5" hspace="5" src="demo_strainEnergy_02.png" alt=""> <h2>&#24212;&#21464;&#19982;&#24212;&#21464;&#33021;&#35745;&#31639;<a name="4"></a></h2><pre class="codeinput">eps_rr = diff(ur);                                                              <span class="comment">% &#20301;&#31227;&#24494;&#20998;&#27714;&#24212;&#21464;</span>
+eps_zz = diff(uz);
+
+strainEnergy1 = 0.5*(lambda+2*mu).*(eps_rr.^2+eps_zz.^2)+lambda*(eps_rr.*eps_zz);   <span class="comment">% &#24212;&#21464;&#33021;-&#38050;&#31563;</span>
+strainEnergy2 = 0.5*(lambda2+2*mu2).*(eps_rr.^2+eps_zz.^2)+lambda2*(eps_rr.*eps_zz);<span class="comment">% &#24212;&#21464;&#33021;-&#28151;&#20957;&#22303;</span>
+
+strainEnergy = strainEnergy1.*(rvect0&lt;= r0) + strainEnergy2.*(rvect0 &gt; r0);         <span class="comment">% &#20998;&#27573;&#20989;&#25968;&#21472;&#21152;</span>
+strainEnergy = tools.norm(strainEnergy)';
+</pre><h2>&#24212;&#21464;&#33021;&#21344;&#27604;&#20998;&#26512;<a name="5"></a></h2><pre class="codeinput">E_steel = trapz(rvect0,strainEnergy1);                                          <span class="comment">% &#38050;&#31563;&#24212;&#21464;&#33021;&#31215;&#20998;</span>
+E_concrete = trapz(rvect0,strainEnergy2);                                       <span class="comment">% &#28151;&#20957;&#22303;&#24212;&#21464;&#33021;&#31215;&#20998;</span>
+
+E_total = E_steel+E_concrete;                                                   <span class="comment">% &#24635;&#33021;&#37327;</span>
+E_steel_percent = E_steel/E_total;
+E_concrete_percent = E_concrete/E_total;
+
+str1 = sprintf(<span class="string">'&#38050;&#31563;%0.2f '</span>,E_steel_percent);
+str2 = sprintf(<span class="string">'&#28151;&#20957;&#22303;%0.2f'</span>,E_concrete_percent);
+</pre><h2>&#24212;&#21464;&#33021;&#32472;&#22270;<a name="6"></a></h2><pre class="codeinput">figure
+subplot(121)                                                                    <span class="comment">% &#24212;&#21464;&#26354;&#32447;,xy&#20114;&#25442;</span>
+area(rvect0,strainEnergy)                                                       <span class="comment">% &#32472;&#21046;&#38452;&#24433;&#38754;&#31215;&#22270;</span>
+tools.xyt({<span class="string">'radius [mm]'</span>,<span class="string">'normalized strain energy'</span>,<span class="string">'Strain Energy'</span>})
+ylim([0 1]),xlim([0 max(rvect)])
+tools.xline([6 0],<span class="string">'r-.'</span>)
+view(90,-90)                                                                    <span class="comment">% &#26059;&#36716;&#35270;&#22270;</span>
+legend([str1,<span class="string">','</span>,str2],<span class="string">'Location'</span>,<span class="string">'north'</span>)
+
+subplot(122)                                                                    <span class="comment">% &#24212;&#21464;&#33021;&#26354;&#32447;</span>
+plot(ur,rvect,uz,rvect);
+legend({<span class="string">'ur'</span>,<span class="string">'uz'</span>})
+xlim([-1 1]),ylim([0 max(rvect)])
+tools.xyt({<span class="string">'normalized displacement'</span>,<span class="string">'radius [mm]'</span>,<span class="string">'displacement'</span>})
+tools.xline([0 6],<span class="string">'r-.'</span>)                                                        <span class="comment">% &#32472;&#21046;&#36793;&#30028;&#32447;</span>
+</pre><img vspace="5" hspace="5" src="demo_strainEnergy_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% 题目: T002-导波模态的应变能分析
+% 参数: 无
+% 功能：
+%       读取fig文件
+%       提取位移曲线数据
+%       求解应变、应变能
+%       总能量积分、能量比例分析与绘图
+% 调用：
+%       tools   REPLACE_WITH_DASH_DASH 信号处理辅助函数
+% 作者：马骋
+% 2016.12.21 @HIT
+
+%% 弹性参数计算
+
+clc,clear,close all
+E = 208e9;                                                                      % 弹性模量-钢筋
+nu = 0.29;                                                                      % 泊松比-钢筋
+
+mu = E/(2*(1+nu));                                                              % shear modulus
+lambda = nu*E/((1+nu)*(1-2*nu));                                                % Lame constant
+
+E2 = 19.89e9;                                                                   % 弹性模量-混凝土
+nu2 = 0.1923;                                                                   % 泊松比-混凝土
+
+mu2 = E2/(2*(1+nu2));                                                           % shear modulus
+lambda2 = nu2*E2/((1+nu2)*(1-2*nu2));                                           % Lame constant
+
+r0 = 6;                                                                         % 钢筋直径
+
+%% 读取位移坐标
+
+fig = open(tools.getfile);                                                      % 打开fig文件
+
+h=findobj(gca,'Type','Line');                                                   % 提取曲线数据对象
+x = get(h,'xdata');                                                             % 坐标数据cell数据
+y = get(h,'ydata');
+
+ur = x{6};                                                                      % ur
+uz = x{5};                                                                      % uz
+rvect = y{5};                                                                   % 位移位置向量
+rvect0 = rvect(1:end-1);                                                        % 应变位置向量
+
+% 位移曲线确认
+figure                                                                          % 模态验证
+hold on 
+plot(ur,rvect,uz,rvect);
+legend({'ur','uz'})
+tools.xline([0 6],'r-.')
+
+%% 应变与应变能计算
+
+eps_rr = diff(ur);                                                              % 位移微分求应变
+eps_zz = diff(uz);
+
+strainEnergy1 = 0.5*(lambda+2*mu).*(eps_rr.^2+eps_zz.^2)+lambda*(eps_rr.*eps_zz);   % 应变能-钢筋
+strainEnergy2 = 0.5*(lambda2+2*mu2).*(eps_rr.^2+eps_zz.^2)+lambda2*(eps_rr.*eps_zz);% 应变能-混凝土
+
+strainEnergy = strainEnergy1.*(rvect0<= r0) + strainEnergy2.*(rvect0 > r0);         % 分段函数叠加
+strainEnergy = tools.norm(strainEnergy)';
+
+%% 应变能占比分析
+
+E_steel = trapz(rvect0,strainEnergy1);                                          % 钢筋应变能积分
+E_concrete = trapz(rvect0,strainEnergy2);                                       % 混凝土应变能积分
+
+E_total = E_steel+E_concrete;                                                   % 总能量
+E_steel_percent = E_steel/E_total;
+E_concrete_percent = E_concrete/E_total;
+
+str1 = sprintf('钢筋%0.2f ',E_steel_percent);
+str2 = sprintf('混凝土%0.2f',E_concrete_percent);
+
+%% 应变能绘图
+
+figure
+subplot(121)                                                                    % 应变曲线,xy互换
+area(rvect0,strainEnergy)                                                       % 绘制阴影面积图
+tools.xyt({'radius [mm]','normalized strain energy','Strain Energy'})
+ylim([0 1]),xlim([0 max(rvect)])
+tools.xline([6 0],'r-.')
+view(90,-90)                                                                    % 旋转视图
+legend([str1,',',str2],'Location','north')
+
+subplot(122)                                                                    % 应变能曲线
+plot(ur,rvect,uz,rvect);
+legend({'ur','uz'})
+xlim([-1 1]),ylim([0 max(rvect)])
+tools.xyt({'normalized displacement','radius [mm]','displacement'})
+tools.xline([0 6],'r-.')                                                        % 绘制边界线
+
+##### SOURCE END #####
+--></body></html>

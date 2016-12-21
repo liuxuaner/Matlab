@@ -1,0 +1,140 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demo_figureSubplot</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-21"><meta name="DC.source" content="demo_figureSubplot.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">&#23376;&#22270;&#35835;&#20837;</a></li><li><a href="#3">&#37325;&#32472;&#22270;&#20687;&#21040;&#26032;&#30340;figure</a></li></ul></div><pre class="codeinput"><span class="comment">% &#39064;&#30446;&#65306;&#22810;&#20010;fiure&#25991;&#20214;&#20197;&#23376;&#22270;&#30340;&#24418;&#24335;&#37325;&#32472;&#21040;&#19968;&#20010;figure&#20013;</span>
+<span class="comment">% &#21442;&#25968;&#65306;&#26080;</span>
+<span class="comment">% &#21151;&#33021;&#65306;</span>
+<span class="comment">% 		&#35835;&#21462;&#22810;&#20010;&#23376;&#22270;&#30340;figure&#25991;&#20214;</span>
+<span class="comment">% 		&#25353;subplot&#26041;&#24335;&#65292;&#37325;&#32472;&#21040;&#19968;&#20010;figure&#22270;&#20687;&#20013;</span>
+<span class="comment">% 		&#23545;&#30456;&#24212;&#30340;&#23548;&#27874;Ev&#25968;&#25454;&#37325;&#25490;&#21015;</span>
+<span class="comment">% &#35843;&#29992;&#65306;&#26080;</span>
+<span class="comment">% &#20316;&#32773;&#65306;&#39532;&#39563;</span>
+<span class="comment">% 2016.12.20 @HIT</span>
+</pre><h2>&#23376;&#22270;&#35835;&#20837;<a name="2"></a></h2><pre class="codeinput">clc,clear,close <span class="string">all</span>
+
+fig(1) = open(<span class="string">'fig1.fig'</span>);                                                      <span class="comment">% &#25171;&#24320;fig&#25991;&#20214;</span>
+fig(2) = open(<span class="string">'fig2.fig'</span>);
+
+ax(1) = get(fig(1), <span class="string">'CurrentAxes'</span>);                                             <span class="comment">% &#33719;&#21462;&#22352;&#26631;&#36724;&#23545;&#35937;</span>
+ax(2) = get(fig(2), <span class="string">'CurrentAxes'</span>);
+</pre><img vspace="5" hspace="5" src="demo_figureSubplot_01.png" alt=""> <img vspace="5" hspace="5" src="demo_figureSubplot_02.png" alt=""> <h2>&#37325;&#32472;&#22270;&#20687;&#21040;&#26032;&#30340;figure<a name="3"></a></h2><pre class="codeinput">str_title = {<span class="string">'780 kHz, 51 db'</span>,<span class="string">'780 kHz, 279 db'</span>};                               <span class="comment">% &#39044;&#35774;&#23376;&#22270;&#26631;&#39064;&#25991;&#23383;</span>
+
+figure
+<span class="keyword">for</span> iloop = 1:2
+    subplot(1,2,iloop)                                                          <span class="comment">% &#23376;&#22270;&#24490;&#29615;</span>
+    axChildren = get(ax(iloop),<span class="string">'Children'</span>);                                     <span class="comment">% &#33719;&#21462;axes&#25152;&#26377;&#23376;&#23545;&#35937;</span>
+    copyobj(axChildren, gca);                                                   <span class="comment">% &#22797;&#21046;&#23545;&#35937;&#21040;&#23376;&#22270;&#30340;axes</span>
+
+<span class="comment">%     ylim([0 20]),grid on                                                        % &#22270;&#20687;&#21442;&#25968;&#35774;&#32622;</span>
+<span class="comment">%     xlabel('normalized mode shape')</span>
+<span class="comment">%     ylabel('radius [mm]')</span>
+<span class="comment">%     title(str_title{iloop})</span>
+<span class="keyword">end</span>
+
+close(fig)                                                                      <span class="comment">% &#20851;&#38381;&#21407;&#22987;&#22270;&#20687;</span>
+</pre><img vspace="5" hspace="5" src="demo_figureSubplot_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% 题目：多个fiure文件以子图的形式重绘到一个figure中
+% 参数：无
+% 功能：
+% 		读取多个子图的figure文件
+% 		按subplot方式，重绘到一个figure图像中
+% 		对相应的导波Ev数据重排列
+% 调用：无
+% 作者：马骋
+% 2016.12.20 @HIT
+
+%% 子图读入
+
+clc,clear,close all
+
+fig(1) = open('fig1.fig');                                                      % 打开fig文件
+fig(2) = open('fig2.fig');
+
+ax(1) = get(fig(1), 'CurrentAxes');                                             % 获取坐标轴对象
+ax(2) = get(fig(2), 'CurrentAxes');
+
+%% 重绘图像到新的figure
+
+str_title = {'780 kHz, 51 db','780 kHz, 279 db'};                               % 预设子图标题文字
+
+figure
+for iloop = 1:2
+    subplot(1,2,iloop)                                                          % 子图循环
+    axChildren = get(ax(iloop),'Children');                                     % 获取axes所有子对象
+    copyobj(axChildren, gca);                                                   % 复制对象到子图的axes
+    
+%     ylim([0 20]),grid on                                                        % 图像参数设置
+%     xlabel('normalized mode shape')
+%     ylabel('radius [mm]')
+%     title(str_title{iloop})
+end
+
+close(fig)                                                                      % 关闭原始图像
+##### SOURCE END #####
+--></body></html>

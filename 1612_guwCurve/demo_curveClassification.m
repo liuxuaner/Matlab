@@ -15,7 +15,7 @@
 %% 数据读取
 
 clc,clear,close all
-filename = 's06c20_f4000_result.mat';                                                     % 读取试验数据
+filename = 's06c20_f1000.mat';                                                     % 读取试验数据
 load(filename);                                                                 % 载入数据
 
 %% 数据预处理
@@ -59,9 +59,7 @@ figure                                                                          
 subplot(211)
 fun_plot0(fkn,wn2,'-*')
 tools.xyt({'Frequency kHz','wave number','波数'})
-xlim([0 2000])
 
 subplot(212)
 fun_plot0(fkn,Ev2,'-*')
 tools.xyt({'Frequency kHz','Energy velocity m/s','能量速度'})
-xlim([0 2000])

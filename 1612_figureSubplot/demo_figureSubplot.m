@@ -28,10 +28,10 @@ for iloop = 1:2
     axChildren = get(ax(iloop),'Children');                                     % 获取axes所有子对象
     copyobj(axChildren, gca);                                                   % 复制对象到子图的axes
     
-    ylim([0 20]),grid on                                                        % 图像参数设置
-    xlabel('normalized mode shape')
-    ylabel('radius [mm]')
-    title(str_title{iloop})
+%     ylim([0 20]),grid on                                                        % 图像参数设置
+%     xlabel('normalized mode shape')
+%     ylabel('radius [mm]')
+%     title(str_title{iloop})
 end
 
 close(fig)                                                                      % 关闭原始图像

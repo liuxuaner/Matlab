@@ -1,0 +1,190 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>demo_curveClassification</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-21"><meta name="DC.source" content="demo_curveClassification.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">&#25968;&#25454;&#35835;&#21462;</a></li><li><a href="#3">&#25968;&#25454;&#39044;&#22788;&#29702;</a></li><li><a href="#4">&#27169;&#24577;&#21305;&#37197;</a></li><li><a href="#5">&#21435;&#38500;&#31354;&#25968;&#25454;&#65292;&#37325;&#26032;&#32472;&#22270;</a></li></ul></div><pre class="codeinput"><span class="comment">% &#39064;&#30446;&#65306;GUIGUW&#23548;&#27874;&#26354;&#32447;&#27169;&#24577;&#21305;&#37197;&#20998;&#32452;</span>
+<span class="comment">% &#21442;&#25968;&#65306;&#26080;</span>
+<span class="comment">% &#21151;&#33021;&#65306;&#26681;&#25454;&#23548;&#27874;&#27874;&#25968;&#20998;&#32452;&#65292;&#21306;&#20998;&#33021;&#37327;&#36895;&#24230;&#26354;&#32447;</span>
+<span class="comment">% 		&#23545;wn&#25968;&#25454;&#26354;&#32447;&#20998;&#32452;</span>
+<span class="comment">% 		&#29983;&#25104;&#23450;&#20301;&#30697;&#38453;</span>
+<span class="comment">% 		&#23545;&#30456;&#24212;&#30340;&#23548;&#27874;Ev&#25968;&#25454;&#37325;&#25490;&#21015;</span>
+<span class="comment">% &#35843;&#29992;&#65306;</span>
+<span class="comment">%       tools       -- &#20449;&#21495;&#32472;&#22270;&#24037;&#20855;&#31665;&#65292;&#32472;&#22270;&#20248;&#21270;</span>
+<span class="comment">%       fun_sort    -- &#26681;&#25454;&#23450;&#20301;&#30697;&#38453;I&#37325;&#26032;&#25490;&#21015;A</span>
+<span class="comment">%       fun_plot0   -- &#32472;&#22270;&#20013;&#21435;&#25481;Y&#20013;&#20026;0&#30340;&#28857;</span>
+<span class="comment">% &#20316;&#32773;&#65306;&#39532;&#39563;</span>
+<span class="comment">% 2016.12.19 @HIT</span>
+</pre><h2>&#25968;&#25454;&#35835;&#21462;<a name="2"></a></h2><pre class="codeinput">clc,clear,close <span class="string">all</span>
+filename = <span class="string">'s06c20_f1000.mat'</span>;                                                     <span class="comment">% &#35835;&#21462;&#35797;&#39564;&#25968;&#25454;</span>
+load(filename);                                                                 <span class="comment">% &#36733;&#20837;&#25968;&#25454;</span>
+</pre><h2>&#25968;&#25454;&#39044;&#22788;&#29702;<a name="3"></a></h2><pre class="codeinput">Ev = Energy_Velocity_m_s;                                                       <span class="comment">% &#33021;&#37327;&#36895;&#24230;</span>
+wn = Real_Wavenumber_1_m;                                                       <span class="comment">% &#27874;&#25968;</span>
+
+n_mode = size(wn,1);                                                            <span class="comment">% &#39057;&#29575;&#27493;&#25968;</span>
+n_f = size(wn,2);                                                               <span class="comment">% &#27169;&#24577;&#25968;&#30446;</span>
+
+fk = Frequency_Hz'/1e3;                                                         <span class="comment">% &#39057;&#29575;&#21521;&#37327;</span>
+fkn = repmat(fk,1,n_mode);                                                      <span class="comment">% &#39057;&#29575;&#25968;&#25454;&#30697;&#38453;</span>
+
+figure
+subplot(211)                                                                    <span class="comment">% &#21407;&#22987;&#25968;&#25454;&#32472;&#22270;</span>
+plot(fkn,wn',<span class="string">'-*'</span>)
+tools.xyt({<span class="string">'Frequency kHz'</span>,<span class="string">'wave number'</span>,<span class="string">'&#21407;&#22987;-&#27874;&#25968;'</span>})
+
+subplot(212)
+plot(fkn,Ev',<span class="string">'-*'</span>)
+tools.xyt({<span class="string">'Frequency kHz'</span>,<span class="string">'Energy velocity m/s'</span>,<span class="string">'&#21407;&#22987;-&#33021;&#37327;&#36895;&#24230;'</span>})
+</pre><img vspace="5" hspace="5" src="demo_curveClassification_01.png" alt=""> <h2>&#27169;&#24577;&#21305;&#37197;<a name="4"></a></h2><pre class="codeinput">[~,I] = sort(wn);                                                               <span class="comment">% &#33719;&#21462;&#23450;&#20301;&#30697;&#38453; I</span>
+wn2 = fun_sort(wn,I)';                                                          <span class="comment">% &#20914;&#25490;&#21015; wn&#65292;Ev</span>
+Ev2 = fun_sort(Ev,I)';
+
+<span class="comment">% figure</span>
+<span class="comment">% subplot(211)                                                                    % &#20914;&#25490;&#21015;&#25968;&#25454;&#32472;&#22270;</span>
+<span class="comment">% plot(fkn,wn2,'-*')</span>
+<span class="comment">% tools.xyt({'Frequency kHz','wave number','&#27169;&#24577;&#20998;&#32452;-&#27874;&#25968;'})</span>
+<span class="comment">%</span>
+<span class="comment">% subplot(212)</span>
+<span class="comment">% plot(fkn,Ev2,'-*')</span>
+<span class="comment">% tools.xyt({'Frequency kHz','Energy velocity m/s','&#27169;&#24577;&#20998;&#32452;-&#33021;&#37327;&#36895;&#24230;'})</span>
+</pre><h2>&#21435;&#38500;&#31354;&#25968;&#25454;&#65292;&#37325;&#26032;&#32472;&#22270;<a name="5"></a></h2><pre class="codeinput">figure                                                                          <span class="comment">% &#21435;&#38500;&#31354;&#25968;&#25454;&#32472;&#22270;</span>
+subplot(211)
+fun_plot0(fkn,wn2,<span class="string">'-*'</span>)
+tools.xyt({<span class="string">'Frequency kHz'</span>,<span class="string">'wave number'</span>,<span class="string">'&#27874;&#25968;'</span>})
+
+subplot(212)
+fun_plot0(fkn,Ev2,<span class="string">'-*'</span>)
+tools.xyt({<span class="string">'Frequency kHz'</span>,<span class="string">'Energy velocity m/s'</span>,<span class="string">'&#33021;&#37327;&#36895;&#24230;'</span>})
+</pre><img vspace="5" hspace="5" src="demo_curveClassification_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% 题目：GUIGUW导波曲线模态匹配分组
+% 参数：无
+% 功能：根据导波波数分组，区分能量速度曲线
+% 		对wn数据曲线分组
+% 		生成定位矩阵
+% 		对相应的导波Ev数据重排列
+% 调用：
+%       tools       REPLACE_WITH_DASH_DASH 信号绘图工具箱，绘图优化
+%       fun_sort    REPLACE_WITH_DASH_DASH 根据定位矩阵I重新排列A
+%       fun_plot0   REPLACE_WITH_DASH_DASH 绘图中去掉Y中为0的点
+% 作者：马骋
+% 2016.12.19 @HIT
+
+
+%% 数据读取
+
+clc,clear,close all
+filename = 's06c20_f1000.mat';                                                     % 读取试验数据
+load(filename);                                                                 % 载入数据
+
+%% 数据预处理
+
+Ev = Energy_Velocity_m_s;                                                       % 能量速度
+wn = Real_Wavenumber_1_m;                                                       % 波数
+
+n_mode = size(wn,1);                                                            % 频率步数
+n_f = size(wn,2);                                                               % 模态数目
+
+fk = Frequency_Hz'/1e3;                                                         % 频率向量
+fkn = repmat(fk,1,n_mode);                                                      % 频率数据矩阵
+
+figure
+subplot(211)                                                                    % 原始数据绘图
+plot(fkn,wn','-*')
+tools.xyt({'Frequency kHz','wave number','原始-波数'})
+
+subplot(212)
+plot(fkn,Ev','-*')
+tools.xyt({'Frequency kHz','Energy velocity m/s','原始-能量速度'})
+
+%% 模态匹配
+
+[~,I] = sort(wn);                                                               % 获取定位矩阵 I
+wn2 = fun_sort(wn,I)';                                                          % 冲排列 wn，Ev
+Ev2 = fun_sort(Ev,I)';
+
+% figure
+% subplot(211)                                                                    % 冲排列数据绘图
+% plot(fkn,wn2,'-*')
+% tools.xyt({'Frequency kHz','wave number','模态分组-波数'})
+% 
+% subplot(212)
+% plot(fkn,Ev2,'-*')
+% tools.xyt({'Frequency kHz','Energy velocity m/s','模态分组-能量速度'})
+
+%% 去除空数据，重新绘图
+
+figure                                                                          % 去除空数据绘图
+subplot(211)
+fun_plot0(fkn,wn2,'-*')
+tools.xyt({'Frequency kHz','wave number','波数'})
+
+subplot(212)
+fun_plot0(fkn,Ev2,'-*')
+tools.xyt({'Frequency kHz','Energy velocity m/s','能量速度'})
+
+##### SOURCE END #####
+--></body></html>
