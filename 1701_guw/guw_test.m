@@ -17,12 +17,17 @@
 clc,clear,close all
 s = guw();
 s.input(0);
-% s.myfilter(0);                                                                   % 滤波器
-s.myHilbert();                                                                  % Hilbert变换
-s.freqAnalysis();                                                               % 傅立叶变换及频谱分析
-% s.timePlot(1);                                                                   % 时域绘图
-s.freqPlot();                                                                   % 频域绘图
-% s.mycwt(0);                                                                      % 小波分析
+s.myfilter(0);                                                                   % 滤波器
+s.timePlot();                                                                   % 时域绘图，绘制包络
+% s.timePlot(1);                                                                  % 时域绘图，绘制包络
+% s.timePlot(0);                                                                  % 时域绘图，不绘制包络
+
+s.freqPlot();                                                                   % 频域绘图，无频响函数
+s.freqPlot(0);                                                                  % 频域绘图，无频响函数
+s.freqPlot(1);                                                                  % 频域绘图，绘制频响函数
+
+s.mycwt(0);                                                                     % 小波分析，显示对话框
+s.mycwt(1);                                                                     % 小波分析，不显示对话框
 % tools.saveGraph;
 
 %% 测试-Overlay

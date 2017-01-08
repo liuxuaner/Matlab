@@ -272,6 +272,7 @@ function s = timePlot(s,flag)
 
 if nargin < 2                                                                   
    flag = 1;                                                                    % 默认绘制包络图
+   s.myHilbert();
 end
 
 figure
@@ -317,6 +318,7 @@ function s = freqPlot(s,flag)
 % 参数： flag == 1,绘制频响函数图
 % 2016.12.31
 
+s.freqAnalysis();                                                               % 傅立叶变换及频谱分析
 if nargin < 2                                                                   % 默认不绘制频响函数
     flag =0;
 end
