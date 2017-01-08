@@ -20,6 +20,7 @@ classdef tools < handle
 %       cleanSignal  预处理导波输入输出信号
 %       colorOrder   MATLAB默认的线条颜色序列
 %       xline    --  绘制贯通直线
+%       saveGragh--  图像保存
 % 作者：马骋
 % 2016.12.13 @ HIT
 
@@ -32,6 +33,7 @@ methods(Static) % 静态方法
         
 function version()   
     % 版本自动说明
+    clc
     str_version =  '版本说明：信号处理函数工具箱\n马骋,2016.04.29 \n\n';
     fprintf(str_version)
     
@@ -47,6 +49,8 @@ function version()
         '2016.05.06,增加clean函数；'
         '2016.12.13,增加colorOrder函数；'
         '2016.12.21,增加xline函数；'
+        '2017.01.05,修改paradlg函数，智能弹出；'
+        '2017.01.05,增加saveGragh函数；'
     };
 
     for iloop = 1:length(str_updatelog)
@@ -58,6 +62,7 @@ end     % version
 function white()    
 % 题目:图像刷白
     set(gcf,'color','white');
+    grid on;
 end      % white  
 
 function xNorm = norm(x)
@@ -75,7 +80,7 @@ xMax = repmat(xMax,nRow,1);                                                     
 xNorm = x./xMax;                                                                % 归一化
 end % norm
 
-function para = paradlg(prompt0,dlg0 )
+function para = paradlg(prompt0,dlg0,isShow)
 % 题目:标准化对话框创建程序
 % 输入:
 %       prompt0     -- 提示语以及默认参数，n*2
@@ -83,8 +88,9 @@ function para = paradlg(prompt0,dlg0 )
 %       	.width  -- 对话框宽度
 %           .title  -- 标题
 %           .save   -- data_dlg后缀名
+%       isShow      -- 是否弹出对话框，
 % 输出：
-%       para        -- 对话框输入参数
+%       para        -- 对话框输入参数，默认弹出，若isShow=0，则不弹出，数值取上次默认值
 % 功能：
 %       创建标准化参数输入对话框
 %       支持 标量、向量、字符串
@@ -94,6 +100,10 @@ function para = paradlg(prompt0,dlg0 )
 % 2016.04.17 @HIT
 
 % prompt参数
+
+if nargin < 3
+    isShow = 1;                                                                 % 默认需要弹出对话框
+end
 
 n = size(prompt0,1);                                                            % 参数组数
 prompt = cell(n,1);                                                             % 提示语
@@ -140,26 +150,28 @@ end
 linewidth = ones(n,2);                                                          % 宽度设置
 linewidth(:,2) = linewidth(:,2)*dlg.width;                                      % 可以输入控制
 options.Interpreter='tex';
-para_dlg = inputdlg(prompt,dlg.title,linewidth,def,options);                    % 打开对话框，获取参数字符串
+para = cell(n,1);                                                           % 输出参数
 
-% 参数转换
+
+if isShow
+    para_dlg = inputdlg(prompt,dlg.title,linewidth,def,options);                % 打开对话框，获取参数字符串
+else 
+    para_dlg = def;                                                             % isShow=0，不弹出对话框，取上次设定值
+end
+
 % 向量转换，字符串转换
-
-para = cell(n,1);                                                               % 输出参数
 for iloop = 1:n
     temp = ['[',para_dlg{iloop},']'];                                           % 默认按向量转换
     para{iloop} = str2num(temp);
-    
+
     if isempty(para{iloop})                                                     % 如果转换后为空，则为字符串
         para{iloop} = para_dlg{iloop};
     end
-    
-    if all(isspace(para_dlg{iloop}))	        								% 多个空格的情况
+
+    if all(isspace(para_dlg{iloop}))                                            % 多个空格的情况
         para{iloop} = [];
     end
 end
-
-% 参数保存
 
 try                                                                             % 如果dlg.issave==1，记忆数据到aux_filename
     if(dlg0.issave)
@@ -594,7 +606,53 @@ else                                                                            
 end
 hold on
 plot(x0,y0,lineSpec);                                                   % 绘制
-end % end of line
+end % end of xline
+
+function xGrid(x0)
+% 题目：图中增加x网格线
+% 时间：2017.01.08
+
+h = gca;
+tick_old = h.XTick
+tick_new = sort([tick_old,x0]);
+set(h,'xtick',tick_new)
+grid on
+
+end
+
+
+function yGrid(y0)
+% 题目：图中增加y网格线
+% 时间：2017.01.08
+
+h = gca;
+tick_old = h.XTick
+tick_new = sort([tick_old,y0]);
+set(h,'xtick',tick_new)
+grid on
+
+end
+
+function saveGraph()
+% 题目：保存gcf图像
+% 时间：2017.01.05
+
+prompt0 = {                                                         % 对话框参数
+    '编号',1
+    '前缀','E004a' 
+    '后缀','wavelet'
+    '图片格式（png/jpg）', 'png'
+};
+
+dlg0.title = '图像保存';
+dlg0.save = 'saveGraph';
+para0 = tools.paradlg(prompt0,dlg0);
+
+filename = [para0{2},'-',num2str(para0{1}),'-',para0{3},'.',para0{4}];
+% print(gcf,'-dpng','abc.png') 
+saveas(gcf,filename);  
+
+end
 
 end % static
 end % classdef

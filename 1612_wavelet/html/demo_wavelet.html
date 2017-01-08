@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>demo_wavelet</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-21"><meta name="DC.source" content="demo_wavelet.m"><style type="text/css">
+      --><title>demo_wavelet</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-01-08"><meta name="DC.source" content="demo_wavelet.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -107,7 +107,6 @@ legend({<span class="string">'&#21407;&#22987;&#21457;&#23556;&#20449;&#21495;'<
     <span class="string">'&#23567;&#27874;&#31867;&#22411;'</span>,<span class="string">'Morl'</span>
     <span class="string">'&#23610;&#24230;&#24207;&#21015;&#30340;&#38271;&#24230;totalscal'</span>,2048
     <span class="string">'&#39057;&#29575;&#26174;&#31034;&#33539;&#22260; kHz'</span>,[0 600]
-
 };
 
 dlg0.title = <span class="string">'&#26102;&#39057;&#20998;&#26512;&#21442;&#25968;&#35774;&#32622;'</span>;
@@ -148,7 +147,7 @@ coefs=cwt(out2,scal,wavename);                                                  
 f=scal2frq(scal,wavename,1/fs2);                                                <span class="comment">% &#23558;&#23610;&#24230;&#36716;&#25442;&#20026;&#39057;&#29575;</span>
 fk = f/1e3;                                                                     <span class="comment">% &#39057;&#29575;&#65292;kHz</span>
 toc                                                                             <span class="comment">% &#35745;&#31639;&#35745;&#26102;</span>
-</pre><pre class="codeoutput">Elapsed time is 2.044374 seconds.
+</pre><pre class="codeoutput">Elapsed time is 4.085185 seconds.
 </pre><h2>&#32472;&#22270;&#35774;&#32622;<a name="7"></a></h2><pre class="codeinput">figure
 subplot(4,1,1)                                                                  <span class="comment">% &#26102;&#31243;&#20449;&#21495;&#32472;&#22270;</span>
 plot([t2,t2]*1e6,[inp2,out2])
@@ -212,7 +211,6 @@ prompt0 = {                                                         % 对话框�
     '小波类型','Morl'
     '尺度序列的长度totalscal',2048
     '频率显示范围 kHz',[0 600]
-    
 };
 
 dlg0.title = '时频分析参数设置';
