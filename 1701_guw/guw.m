@@ -47,6 +47,7 @@ fk_range                                                                        
 
 % 频谱图参数
 
+Ampl                                                                            % 信号幅值
 fzk                                                                             % 频域横轴，单位 kHz
 X                                                                               % 频谱-输入信号
 Y                                                                               % 频谱-输出信号
@@ -113,12 +114,17 @@ end
 prompt0 = {                                                                     % 对话框参数
     '分析通道数量',2
     '频谱范围（kHz）',1000
+    '是否剔除数据',0
+    '提出数据范围',[0 100]
 };
 dlg0.title = '数据读取参数-马骋';
 dlg0.save = 'input';
 s.para = tools.paradlg(prompt0,dlg0,flag); 
 s.N_ch = s.para{1};                                                         % 分析通道数量
 s.fk_range = s.para{2};                                                     % 频谱分析范围
+
+isRemove = s.para{3};
+range_remove = s.para{4}*1e-6;                                                  % 提出信号的时间范围
 
 % ------------------------------数据读取----------------------------------------
 
@@ -136,10 +142,15 @@ s.out0 = s.M(:,3:1+s.N_ch);                                                     
 
 s.inp = tools.clean(s.inp0);                                                    % 信号去均值
 s.out0 = tools.clean(s.out0);                                                   % 如此设置，可以跳过myfilter
+
+index_remove = (s.t>range_remove(1)) & (s.t<range_remove(2));
 for iloop = 1:s.N_ch-1
     s.out{iloop} = s.out0(:,iloop);                                             % 转换列向量
+    if isRemove
+        s.out{iloop}(index_remove) = 0;                                         % 剔除数据
+    end
 end
-
+temp = s.out{1};
 end
 
 %% 信号处理
@@ -170,10 +181,10 @@ para_lp.fs = s.fs;
 para_lp.type = 1;                                                               % 滤波器类型：切比雪夫-1
 flag = para0{3};                                                                % 是否绘制滤波器频域曲线
 
-s.inp = tools.lowp(s.inp,para_lp,flag);                                      % 输入信号-滤波
+s.inp = tools.lowp(s.inp,para_lp,flag);                                         % 输入信号-滤波
 
 for iloop = 1:s.N_ch-1
-    out_temp = tools.lowp(s.out0(:,iloop),para_lp,flag);                     % 输出信号-滤波
+    out_temp = tools.lowp(s.out{iloop},para_lp,flag);                           % 输出信号-滤波
     s.out{iloop} = tools.row2mat(out_temp);                                     % 转换列向量
 end
 
@@ -286,31 +297,29 @@ plot(t_us,s.inp)
 tools.xyt({'t /\mu s','Voltage/V','发射信号时程'})
 legend({'发射信号'})
 
-if flag
-    for iloop = 3:s.N_ch+1                                                      % 接收信号时程绘制
-        subplot(s.N_ch+1,1,iloop)   
-        plot(t_us,s.out{iloop-2}),hold on
-        plot(t_us,abs(s.out_h{iloop-2}))                                        % 包络绘制
-        legend({'接收信号','包络'})                                                 
-        tools.xyt({'t /\mu s','Voltage/V','接收信号时程图'})
-    end
-else
-     for iloop = 3:s.N_ch+1                                                     % 接收信号时程绘制
-        subplot(s.N_ch+1,1,iloop)   
-        plot(t_us,s.out{iloop-2})
-        legend({'接收信号'})                                                 
-        tools.xyt({'t /\mu s','Voltage/V','接收信号时程图'})
-    end   
-end
-
 s.dispAmpl();
+str_title_Ampl = ['接收信号时程图-','幅值：',num2str(s.Ampl),'V'];
+
+for iloop = 3:s.N_ch+1
+    subplot(s.N_ch+1,1,iloop)   
+    plot(t_us,s.out{iloop-2})
+    legend({'接收信号'})                                                 
+    tools.xyt({'t /\mu s','Voltage/V',str_title_Ampl})
+    if flag
+        hold on 
+        plot(t_us,abs(s.out_h{iloop-2}))                                        % 包络绘制
+        legend({'接收信号','包络'})
+    else
+        legend({'接收信号'})  
+    end
+end
 
 end % timePlot
 
 function s = dispAmpl(s)
-    Ampl = max(abs(s.out{1}));                                                  % 峰值说明
+    s.Ampl = max(abs(s.out{1}));                                                  % 峰值说明
     disp('接收信号峰值为：')
-    disp(Ampl)
+    disp(s.Ampl)
 end
     
 function s = freqPlot(s,flag)
@@ -322,6 +331,8 @@ s.freqAnalysis();                                                               
 if nargin < 2                                                                   % 默认不绘制频响函数
     flag =0;
 end
+[band,x0] = tools.getband3db(s.fs,s.inp,0);
+str_title_inp = ['发射信号频谱','-信号带宽:',num2str(band/1000),'kHz'];
 
 % -------------频谱图-------------
 figure
@@ -333,7 +344,11 @@ tools.xyt({'t /\mu s','Voltage/V','发射信号与接收信号时程'})
 subplot(s.N_ch+1,1,2)                                                           % 发射信号频谱
 plot(s.fzk,abs(s.XNorm))
 xlim([0 s.fk_range])
-tools.xyt({'Freq/kHz','Magnitude','发射信号频谱'})
+tools.xyt({'Freq/kHz','Magnitude',str_title_inp})
+hold on 
+tools.xline([x0(1)/1000 0],'m--')                                               % 带宽显示
+tools.xline([x0(2)/1000 0],'m--')
+
 
 for iloop = 3:s.N_ch+1                                                          % 接收信号时程绘制
     subplot(s.N_ch+1,1,iloop)   

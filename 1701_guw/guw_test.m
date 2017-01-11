@@ -17,8 +17,8 @@
 clc,clear,close all
 s = guw();
 s.input(1);
-s.myfilter(1);                                                                   % 滤波器
-s.timePlot(0);                                                                   % 时域绘图，绘制包络
+s.myfilter(0);                                                                   % 滤波器
+s.timePlot(0);                                                                    % 时域绘图，绘制包络
 s.freqPlot();                                                                   % 频域绘图，无频响函数
 s.mycwt(1);                                                                     % 小波分析，显示对话框
 % tools.saveGraph;

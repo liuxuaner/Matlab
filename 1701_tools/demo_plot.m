@@ -43,3 +43,9 @@ tools.yGrid(sin(pi/4))
 figure
 tools.plot0;  
 tools.saveGraph;                                                                % Í¼Æ¬±£´æ¶Ô»°¿ò
+
+%% colorOrder
+t = linspace(0,2*pi,100);
+figure,hold on
+plot(t,sin(t),'color',tools.colorOrder(1))
+plot(t,sin(2*t),'color',tools.colorOrder(2))
