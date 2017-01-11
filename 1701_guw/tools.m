@@ -22,6 +22,7 @@ classdef tools < handle
 %       xline    --  绘制贯通直线
 %       saveGragh--  图像保存
 %       xGrid,yGrid  增加网格线
+%       plot0   --   最简正弦曲线绘制
 % 作者：马骋
 % 2016.12.13 @ HIT
 
@@ -53,6 +54,7 @@ function version()
         '2017.01.05,修改paradlg函数，智能弹出；'
         '2017.01.05,增加saveGragh函数；'
         '2017.01.08,增加xGrid,yGrid网格线'
+        '2017.01.08,增加plot0函数；'
     };
 
     for iloop = 1:length(str_updatelog)
@@ -625,8 +627,7 @@ set(h,'xtick',tick_new)
 set(h,'xTickLabelRotation',angle)
 grid on
 
-end
-
+end % xGrid
 
 function yGrid(y0)
 % 题目：图中增加y网格线
@@ -638,7 +639,7 @@ tick_new = sort([tick_old,y0]);
 set(h,'ytick',tick_new)
 grid on
 
-end
+end % yGrid
 
 function saveGraph()
 % 题目：保存gcf图像
@@ -659,7 +660,16 @@ filename = [para0{2},'-',num2str(para0{1}),'-',para0{3},'.',para0{4}];
 % print(gcf,'-dpng','abc.png') 
 saveas(gcf,filename);  
 
-end
+end % saveGraph
+
+function plot0()
+% 题目：最简正弦绘图示例
+% 时间：2017.01.08
+
+close all
+t = 0:0.01:2*pi;
+plot(t,sin(t))
+end % plot0
 
 end % static
 end % classdef

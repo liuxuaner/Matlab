@@ -6,7 +6,7 @@ classdef tools < handle
 %       norm     --  ¸´ÊıÏòÁ¿¹éÒ»»¯
 %       paradlg  --  ´´½¨±ê×¼»¯²ÎÊı¶Ô»°¿ò
 %       paste    --  ÊıÖµÏòÁ¿Óë×Ö·û´®Õ³Ìù
-%       envelope --  ÌáÈ¡ĞÅºÅ°üÂçÏß
+%       envelope --  ÌáÈ¡ĞÅºÅ°üÂçÏß£¬Ã»ÓÃÁË
 %       lowp     --  µÍÍ¨ÂË²¨Æ÷
 %       getdir   --  ¶ÁÈ¡Ò»¸öÎÄ¼ş¼ĞÄ¿Â¼
 %       getfile  --  ¶ÁÈ¡Ò»¸öÎÄ¼şÃû
@@ -21,6 +21,8 @@ classdef tools < handle
 %       colorOrder   MATLABÄ¬ÈÏµÄÏßÌõÑÕÉ«ĞòÁĞ
 %       xline    --  »æÖÆ¹áÍ¨Ö±Ïß
 %       saveGragh--  Í¼Ïñ±£´æ
+%       xGrid,yGrid  Ôö¼ÓÍø¸ñÏß
+%       plot0   --   ×î¼òÕıÏÒÇúÏß»æÖÆ
 % ×÷Õß£ºÂí³Ò
 % 2016.12.13 @ HIT
 
@@ -32,9 +34,9 @@ end % properties
 methods(Static) % ¾²Ì¬·½·¨
         
 function version()   
-    % °æ±¾×Ô¶¯ËµÃ÷
+% ÌâÄ¿£º°æ±¾×Ô¶¯ËµÃ÷
     clc
-    str_version =  '°æ±¾ËµÃ÷£ºĞÅºÅ´¦Àíº¯Êı¹¤¾ßÏä\nÂí³Ò,2016.04.29 \n\n';
+    str_version =  '°æ±¾ËµÃ÷£ºÊı¾İ´¦ÀíÓëĞÅºÅ»æÍ¼¸¨Öú¹¤¾ßÏä\nÂí³Ò,´´½¨ÓÚ2016.04.29 \n\n';
     fprintf(str_version)
     
     str_updatelog = {
@@ -51,6 +53,11 @@ function version()
         '2016.12.21,Ôö¼Óxlineº¯Êı£»'
         '2017.01.05,ĞŞ¸Äparadlgº¯Êı£¬ÖÇÄÜµ¯³ö£»'
         '2017.01.05,Ôö¼ÓsaveGraghº¯Êı£»'
+        '2017.01.08,Ôö¼ÓxGrid,yGridÍø¸ñÏß'
+        '2017.01.08,Ôö¼Óplot0º¯Êı£»'
+        '2017.01.10,Ôö¼Óintersectionº¯Êı£»'
+        '2017.01.10,Ôö¼Ógetband3dbº¯Êı£»'
+        '2017.01.10,Ôö¼Ótoneburstº¯Êı£»'
     };
 
     for iloop = 1:length(str_updatelog)
@@ -63,6 +70,7 @@ function white()
 % ÌâÄ¿:Í¼ÏñË¢°×
     set(gcf,'color','white');
     grid on;
+    shg;
 end      % white  
 
 function xNorm = norm(x)
@@ -319,31 +327,27 @@ y = filter(b,a,x);                                                  % ¶ÔĞòÁĞxÂË²
 
 end  % lowp
 
-function [dir_name] = getdir(type)
-
-if nargin == 0
-    type = 'new';
-end   
-    
-data_dir = ['data_dir','_',type];                                   % ±£´æÂ·¾¶µÄÊı¾İÃû
+function [dir_name] = getdir()
 % ÌâÄ¿£º»ñÈ¡ÎÄ¼ş¼ĞÃû³Æ
-% ÊäÈë:
-%       type     -- ¼ÇÒäÊı¾İ±êÊ¶
 % Êä³ö£º
 %       dir_name -- ÎÄ¼ş¼ĞÂ·¾¶
 % ×÷Õß: Âí³Ò
 % 2016.04.23 @HIT
 
+    
+data_dir = ['data_dir','_',getdir];                                             % ±£´æÂ·¾¶µÄÊı¾İÃû
+
+
 try
     load(data_dir)
     dir_name = uigetdir(start_path);
 catch
-    dir_name = uigetdir;                                            % »ñÈ¡ÎÄ¼ş¼ĞµØÖ·
+    dir_name = uigetdir;                                                        % »ñÈ¡ÎÄ¼ş¼ĞµØÖ·
 end
 
 start_path = dir_name;
 
-save(data_dir,'start_path');                                        % ±£´æÎÄ¼ş¼ĞÂ·¾¶
+save(data_dir,'start_path');                                                    % ±£´æÎÄ¼ş¼ĞÂ·¾¶
 
 end % getdir
 
@@ -358,7 +362,7 @@ function [fullname,pathname,filename] = getfile(type,ext)
 % Âí³Ò£¬2016.04.23
 
 if nargin == 0                                                      % ÊäÈëÊı¾İÔ¤´¦Àí
-    type = 'new';
+    type = 'getfile';
     FilterSpec = '*.*';
 elseif nargin == 1
     FilterSpec = '*.*';
@@ -388,19 +392,21 @@ function data = gettxt(nrow_start)
 %       data        -- ĞÅºÅÊı¾İ
 % ×÷Õß: Âí³Ò
 % 2016.04.23 @HIT
+% bug: dlmread¶ÁÈ¡txtÎÄ¼ş£¬¿ÉÄÜ³öÏÖ´íÂÒ
 
-if nargin == 0
+fullname = tools.getfile('gettxt','txt');                                       % »ñÈ¡Êı¾İÎÄ¼şÃû
+
+if nargin < 1
     rowoff = 0;
-else
+    data = load(filename);
+else                                                                            % ¿¼ÂÇÌøĞĞµÄÇé¿ö£¬¿ÉÄÜ³öÏÖÊı¾İ´íÂÒ
     rowoff = nrow_start -1;
+    data = dlmread(fullname,' ',rowoff,0);
 end
-
-fullname = tools.getfile('signal','txt');
-data = dlmread(fullname,' ',rowoff,0);
 
 end % gettxt
 
-function [data,para0] = getcsv(flag0)
+function [data,para0] = getcsv(flag)
 % ÌâÄ¿: Ê¾²¨Æ÷Êä³öcsvÊı¾İ±ê×¼¶ÁÈ¡
 % ÊäÈë:
 %       flag   -- flag==1£¬Ôòµ¯³ö¶Ô»°¿ò£¬·ñÔòÄ¬ÈÏ±ê×¼²ÎÊı
@@ -416,10 +422,9 @@ function [data,para0] = getcsv(flag0)
 % 2016.04.17 @HIT
 
 % »ñÈ¡Êı¾İÎÄ¼şÃû
-
-flag = 0;                                                           % ÊÇ·ñ´ò¿ªÎ»ÖÃ²ÎÊı¶Ô»°¿ò
-if nargin == 1
-    flag = flag0;
+ 
+if nargin < 1                                                       % ÊÇ·ñ´ò¿ªÎ»ÖÃ²ÎÊı¶Ô»°¿ò
+    flag = 1;
 end
 
 fullname = tools.getfile('guw','csv');
@@ -450,9 +455,9 @@ function data = getmat()
 % ÌâÄ¿£º¶ÁÈ¡Ö»ÓĞÒ»¸ö±äÁ¿µÄ¾ØÕóÊı¾İmatÎÄ¼ş
 
 filename = tools.getfile('mat');
-temp1 = load(filename);                                             % ÔØÈë£¬½á¹¹Ìå
-temp2 = struct2cell(temp1);                                         % ×ª»»cell
-data = temp2{1};                                                    % ×ª»»¾ØÕó
+temp1 = load(filename);                                                         % ÔØÈë£¬½á¹¹Ìå
+temp2 = struct2cell(temp1);                                                     % ×ª»»cell
+data = temp2{1};                                                                % ×ª»»¾ØÕó
 end % getmat
 
 function xyt(str_xyt)
@@ -478,10 +483,11 @@ rg(2,:) = max(data);
 end % range
 
 function mat = row2mat(row)
-% ÌâÄ¿£ºĞĞÏòÁ¿×ª»»Îª¾ØÕó
+% ÌâÄ¿£º½«ĞĞÏòÁ¿»òÕßĞĞÏòÁ¿×é³ÉµÄ¾ØÕó×ª»»ÎªÁĞÏòÁ¿ĞÎÊ½
+% Ê±¼ä£º2017.01.11
 
-if isrow(row)
-    mat = row';                                                               % ĞĞÏòÁ¿×ªÖÃ
+if size(row,2)> size(row,1)                                                     % ÁĞÊı´óÓÚĞĞÊı
+    mat = row';                                                                 % ĞĞÏòÁ¿×ªÖÃ
 else
     mat = row;
 end
@@ -506,8 +512,6 @@ else
     disp(['±¨¸æÊä³öÍê³É£º',htmlFile0])
 end
 delete(mFile2);                                                                 % É¾³ı¸¨ÖúÎÄ¼ş
-
-
 
 end % html
 
@@ -608,33 +612,52 @@ hold on
 plot(x0,y0,lineSpec);                                                   % »æÖÆ
 end % end of xline
 
-function xGrid(x0)
+function xGrid(x0,angle)
 % ÌâÄ¿£ºÍ¼ÖĞÔö¼ÓxÍø¸ñÏß
+% Êä³ö£º
+%       x0  -- Ôö¼ÓÍø¸ñÏßµÄ×ø±ê£¬±êÁ¿¡¢ÏòÁ¿¾ùÖ§³Ö
+%       angle- ×ø±ê±êÇ©ÎÄ±¾½Ç¶Èµ÷Õû
 % Ê±¼ä£º2017.01.08
 
+if nargin < 2
+    angle = 0;                                                                  % ±ê×¢Ğı×ª½Ç¶È
+end
+
 h = gca;
-tick_old = h.XTick
+tick_old = h.XTick;
 tick_new = sort([tick_old,x0]);
 set(h,'xtick',tick_new)
+set(h,'xTickLabelRotation',angle)
 grid on
 
-end
+end % xGrid
 
-
-function yGrid(y0)
+function yGrid(y0,angle)
 % ÌâÄ¿£ºÍ¼ÖĞÔö¼ÓyÍø¸ñÏß
+% Êä³ö£º
+%       y0  -- Ôö¼ÓÍø¸ñÏßµÄ×ø±ê£¬±êÁ¿¡¢ÏòÁ¿¾ùÖ§³Ö
+%       angle- ×ø±ê±êÇ©ÎÄ±¾½Ç¶Èµ÷Õû
+% Ê±¼ä£º2017.01.08
 % Ê±¼ä£º2017.01.08
 
+if nargin < 2
+    angle = 0;                                                                  % ±ê×¢Ğı×ª½Ç¶È
+end
+
 h = gca;
-tick_old = h.XTick
+tick_old = h.YTick;
 tick_new = sort([tick_old,y0]);
-set(h,'xtick',tick_new)
+set(h,'ytick',tick_new)
+set(h,'yTickLabelRotation',angle)
 grid on
 
-end
+end % yGrid
 
 function saveGraph()
 % ÌâÄ¿£º±£´ægcfÍ¼Ïñ
+% ¹¦ÄÜ£º
+%       ×Ô¶¨ÒåÍ¼Æ¬¸ñÊ½
+%       ×Ô¶¨ÒåÍ¼Æ¬ÎÄ¼şÃû±àºÅ
 % Ê±¼ä£º2017.01.05
 
 prompt0 = {                                                         % ¶Ô»°¿ò²ÎÊı
@@ -652,7 +675,307 @@ filename = [para0{2},'-',num2str(para0{1}),'-',para0{3},'.',para0{4}];
 % print(gcf,'-dpng','abc.png') 
 saveas(gcf,filename);  
 
+end % saveGraph
+
+function plot0()
+% ÌâÄ¿£º×î¼òÕıÏÒ»æÍ¼Ê¾Àı
+% Ê±¼ä£º2017.01.08
+
+close all
+t = 0:0.01:2*pi;
+plot(t,sin(t))
+end % plot0
+
+function [x0,y0,iout,jout] = intersections(x1,y1,x2,y2,robust)
+%INTERSECTIONS Intersections of curves.
+%   Computes the (x,y) locations where two curves intersect.  The curves
+%   can be broken with NaNs or have vertical segments.
+%
+% Example:
+%   [X0,Y0] = intersections(X1,Y1,X2,Y2,ROBUST);
+% Input checks.
+error(nargchk(2,5,nargin))
+
+% Adjustments when fewer than five arguments are supplied.
+switch nargin
+	case 2
+		robust = true;
+		x2 = x1;
+		y2 = y1;
+		self_intersect = true;
+	case 3
+		robust = x2;
+		x2 = x1;
+		y2 = y1;
+		self_intersect = true;
+	case 4
+		robust = true;
+		self_intersect = false;
+	case 5
+		self_intersect = false;
 end
+
+
+% x1 and y1 must be vectors with same number of points (at least 2).
+if sum(size(x1) > 1) ~= 1 || sum(size(y1) > 1) ~= 1 || ...
+		length(x1) ~= length(y1)
+	error('X1 and Y1 must be equal-length vectors of at least 2 points.')
+end
+% x2 and y2 must be vectors with same number of points (at least 2).
+if sum(size(x2) > 1) ~= 1 || sum(size(y2) > 1) ~= 1 || ...
+		length(x2) ~= length(y2)
+	error('X2 and Y2 must be equal-length vectors of at least 2 points.')
+end
+
+% Force all inputs to be column vectors.
+x1 = x1(:);
+y1 = y1(:);
+x2 = x2(:);
+y2 = y2(:);
+
+% Compute number of line segments in each curve and some differences we'll
+% need later.
+n1 = length(x1) - 1;
+n2 = length(x2) - 1;
+xy1 = [x1 y1];
+xy2 = [x2 y2];
+dxy1 = diff(xy1);
+dxy2 = diff(xy2);
+
+% Determine the combinations of i and j where the rectangle enclosing the
+% i'th line segment of curve 1 overlaps with the rectangle enclosing the
+% j'th line segment of curve 2.
+[i,j] = find(repmat(min(x1(1:end-1),x1(2:end)),1,n2) <= ...
+	repmat(max(x2(1:end-1),x2(2:end)).',n1,1) & ...
+	repmat(max(x1(1:end-1),x1(2:end)),1,n2) >= ...
+	repmat(min(x2(1:end-1),x2(2:end)).',n1,1) & ...
+	repmat(min(y1(1:end-1),y1(2:end)),1,n2) <= ...
+	repmat(max(y2(1:end-1),y2(2:end)).',n1,1) & ...
+	repmat(max(y1(1:end-1),y1(2:end)),1,n2) >= ...
+	repmat(min(y2(1:end-1),y2(2:end)).',n1,1));
+
+% Force i and j to be column vectors, even when their length is zero, i.e.,
+% we want them to be 0-by-1 instead of 0-by-0.
+i = reshape(i,[],1);
+j = reshape(j,[],1);
+
+if self_intersect
+	remove = isnan(sum(dxy1(i,:) + dxy2(j,:),2)) | j <= i + 1;
+else
+	remove = isnan(sum(dxy1(i,:) + dxy2(j,:),2));
+end
+i(remove) = [];
+j(remove) = [];
+
+n = length(i);
+T = zeros(4,n);
+AA = zeros(4,4,n);
+AA([1 2],3,:) = -1;
+AA([3 4],4,:) = -1;
+AA([1 3],1,:) = dxy1(i,:).';
+AA([2 4],2,:) = dxy2(j,:).';
+B = -[x1(i) x2(j) y1(i) y2(j)].';
+
+if robust
+	overlap = false(n,1);
+	warning_state = warning('off','MATLAB:singularMatrix');
+	% Use try-catch to guarantee original warning state is restored.
+	try
+		lastwarn('')
+		for k = 1:n
+			T(:,k) = AA(:,:,k)\B(:,k);
+			[unused,last_warn] = lastwarn;
+			lastwarn('')
+			if strcmp(last_warn,'MATLAB:singularMatrix')
+				% Force in_range(k) to be false.
+				T(1,k) = NaN;
+				% Determine if these segments overlap or are just parallel.
+				overlap(k) = rcond([dxy1(i(k),:);xy2(j(k),:) - xy1(i(k),:)]) < eps;
+			end
+		end
+		warning(warning_state)
+	catch err
+		warning(warning_state)
+		rethrow(err)
+	end
+	% Find where t1 and t2 are between 0 and 1 and return the corresponding
+	% x0 and y0 values.
+	in_range = (T(1,:) >= 0 & T(2,:) >= 0 & T(1,:) <= 1 & T(2,:) <= 1).';
+	% For overlapping segment pairs the algorithm will return an
+	% intersection point that is at the center of the overlapping region.
+	if any(overlap)
+		ia = i(overlap);
+		ja = j(overlap);
+		% set x0 and y0 to middle of overlapping region.
+		T(3,overlap) = (max(min(x1(ia),x1(ia+1)),min(x2(ja),x2(ja+1))) + ...
+			min(max(x1(ia),x1(ia+1)),max(x2(ja),x2(ja+1)))).'/2;
+		T(4,overlap) = (max(min(y1(ia),y1(ia+1)),min(y2(ja),y2(ja+1))) + ...
+			min(max(y1(ia),y1(ia+1)),max(y2(ja),y2(ja+1)))).'/2;
+		selected = in_range | overlap;
+	else
+		selected = in_range;
+	end
+	xy0 = T(3:4,selected).';
+	
+	% Remove duplicate intersection points.
+	[xy0,index] = unique(xy0,'rows');
+	x0 = xy0(:,1);
+	y0 = xy0(:,2);
+	
+	% Compute how far along each line segment the intersections are.
+	if nargout > 2
+		sel_index = find(selected);
+		sel = sel_index(index);
+		iout = i(sel) + T(1,sel).';
+		jout = j(sel) + T(2,sel).';
+	end
+else % non-robust option
+	for k = 1:n
+		[L,U] = lu(AA(:,:,k));
+		T(:,k) = U\(L\B(:,k));
+	end
+	
+	% Find where t1 and t2 are between 0 and 1 and return the corresponding
+	% x0 and y0 values.
+	in_range = (T(1,:) >= 0 & T(2,:) >= 0 & T(1,:) < 1 & T(2,:) < 1).';
+	x0 = T(3,in_range).';
+	y0 = T(4,in_range).';
+	
+	% Compute how far along each line segment the intersections are.
+	if nargout > 2
+		iout = i(in_range) + T(1,in_range).';
+		jout = j(in_range) + T(2,in_range).';
+	end
+end
+
+% Plot the results (useful for debugging).
+% plot(x1,y1,x2,y2,x0,y0,'ok');
+
+end % intersection
+
+function [band3db,x0] = getband3db(fs,S,flag)
+% ÌâÄ¿£º¼ÆËã¸ø¶¨ĞÅºÅµÄ3db´ø¿í
+% ÊäÈë£º
+%       fs  -- ²ÉÑùÆµÂÊ
+%       S   -- ĞÅºÅÊ±³Ì
+%       flag-- ÊÇ·ñ»æÖÆÍ¼Ïñ
+% Ê±¼ä£º2017.01.10
+
+if nargin < 3
+    flag = 1;
+end
+
+Nz = length(S);                                                                 % Êı¾İ³¤¶È
+fz= fs*(0:Nz-1)/Nz;                                                             % ÆµÓòºáÖá
+X = abs(fft(S));                                                                % fft±ä»»
+
+x1 = [0,fs/2];                                                                  % 3dbºáÏß
+y1 = [1 1]*max(X)/sqrt(2);
+
+x2 = fz;                                                                        % ĞÅºÅ
+y2 = X;
+
+[x0,y0,~,~] = intersections(x1,y1,x2,y2);                                       % ½»µãÇó½â
+band3db = x0(2)-x0(1);                                                          % ´ø¿í¼ÆËã
+
+if flag                                                                         % Í¼Ïñ»æÖÆ¼ì²é
+    figure
+    plot(x1,y1,x2,y2,x0,y0,'ok');
+    xlim([0 fs/2])
+end                                           
+
+end % get3band3db
+
+function [S,fs] = toneburst()
+% ÌâÄ¿: ³¬Éùµ¼²¨¼¤ÀøĞÅºÅµÄÉú³ÉÓëÆµÆ×·ÖÎö
+% ²ÎÊı:
+%       N  - cycleÊı£¬¼´¼¤ÀøĞÅºÅ²¨·åÊı
+%       fc - ¼¤ÀøĞÅºÅÖĞĞÄÆµÂÊ
+% ¹¦ÄÜ£º
+%       Éú³É¼¤ÀøĞÅºÅĞòÁĞ
+%       »æÖÆÊ±ÓòÍ¼ºÍÆµÓòÍ¼
+%       ¶Ô±È²»Í¬cycleÊıĞÅºÅµÄÌØÕ÷
+%       Êä³ötxtÎÄ¼ş
+% ×÷Õß: Âí³Ò
+% 2016.03.18 @HIT    
+
+% -----------------------»ù±¾²ÎÊı-----------------------
+
+prompt0 = {                                                                     % ¶Ô»°¿ò²ÎÊı
+    '¼¤ÀøĞÅºÅ·ùÖµ(Vpp)',1
+    'ĞÅºÅÖĞĞÄÆµÂÊ£¨kHz£©',200
+    '²¨·åÊı£¨cylces£©',1
+    'ĞÅºÅ³ÖĞøÊ±¼ä£¨\mu s£©',100
+    'ÊÇ·ñÊä³öĞÅºÅÊı¾İÎÄ¼ş',0
+};
+dlg0.title = '¼¤ÀøĞÅºÅÉú³É-Âí³Ò';
+dlg0.save = 'toneburst';
+para = tools.paradlg(prompt0,dlg0); 
+
+A = para{1};                                                                    % ¼¤ÀøĞÅºÅ·ùÖµ
+fck = para{2};                                                                  % ¼¤ÀøÖĞĞÄÆµÂÊ kHz
+N = para{3};                                                                    % cycleÊı£¬¼´¼¤ÀøĞÅºÅ²¨·åÊı
+fc = fck*1e3;                                                                   % ¼¤ÀøĞÅºÅÖĞĞÄÆµÂÊ£¬Hz 
+T = para{4}*1e-6;                                                               % µ¼²¨´«²¥Ê±¼äs
+dt = 1/(20*fc)/2;                                                               % Ê±¼ä²½³¤£¬ÔÚ×î´ó²½³¤»ù´¡ÉÏ³ıÒÔ2
+t = [0:dt:T-dt]';                                                               % Ê±¼äĞòÁĞ
+t_us = T*1e6; 
+
+flag_output = para{5};                                                          % ÊÇ·ñÊä³öĞÅºÅÊı¾İ
+
+% -----------------------ĞÅºÅÊ±Óò²¨ĞÎ-----------------------
+
+S = A/2*[heaviside(t)-heaviside(t-N/fc)].*...                                    % ĞÅºÅÊ±Óò²¨ĞÎ         
+    (1-cos(2*pi*fc*t/N)).*sin(2*pi*fc*t);
+% #Change the range according to your settings
+% range(0,50us)
+% #Your equation goes here
+% (1-Cos(2*pi*W/5))*Sin(2*pi*W)
+% -----------------------ÆµÓòĞÅºÅ-----------------------
+
+fs = 1/dt;                                                                      % ²ÉÑùÆµÂÊ
+Nz = length(t);                                                                 % Êı¾İ³¤¶È
+fz= fs*(0:Nz-1)/Nz;                                                             % ÆµÓòºáÖá
+X = fft(S);                                                                     % fft±ä»»
+
+[band,x0] = tools.getband3db(fs,S,0);                                           % ´ø¿í¼ÆËã
+bwk = band/1e3;
+
+% -----------------------»æÍ¼-----------------------
+
+figure
+subplot(211)
+plot(t,S)
+str_title = ['ÖĞĞÄÆµÂÊ',num2str(fck),'kHz'];
+tools.xyt({'t(s)','Mangitude(N)',str_title})
+xlim([0 T]),grid on
+
+subplot(212)
+plot(fz/1000,abs(X))
+str_title = ['ĞÅºÅ´ø¿í',num2str(bwk),'kHz'];
+tools.xyt({'frequency(kHz)','Amplitude',str_title})
+xlim([0 fs/2/1000]),grid on                                                     % ·À»ìµş£¬fs/2
+X_3db = max(abs(X))/sqrt(2);
+tools.xline([0 X_3db],'m-')
+tools.yGrid(X_3db)
+tools.white;
+
+% -----------------------ĞÅºÅÊä³ö-----------------------
+
+str_time = [num2str(T/1e-6),'US'];                                              % ĞÅºÅÊı¾İÎÄ¼şÃû¹¹Ôì
+str_num = ['S',num2str(length(S))];
+filename = ['V',num2str(fc/1000),'K_C',num2str(N),...
+    '_',str_time,'_',str_num,'.TXT'];
+
+if  flag_output
+    fid = fopen(filename, 'w');
+    for iloop=1:length(S)
+        fprintf(fid, '%15.10f \r\n', S(iloop));
+    end
+    fclose(fid);
+end
+
+end % toneburst
 
 end % static
 end % classdef

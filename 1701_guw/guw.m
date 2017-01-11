@@ -122,7 +122,7 @@ s.fk_range = s.para{2};                                                     % 频
 
 % ------------------------------数据读取----------------------------------------
 
-[s.M,s.dt] = tools.getcsv();                                                    % 读入csv信号和采样周期dt
+[s.M,s.dt] = tools.getcsv(0);                                                    % 读入csv信号和采样周期dt
 s.fs = 1/s.dt;                                                                  % 采样频率
 
 s.t0 = s.M(:,1);                                                                % 第1列，时间s.t = s.t0 - s.t0(1);                                                           % 减去初始值
@@ -358,7 +358,6 @@ if flag
 end
 
 end % freqPlot
-
 
 function s = mycwt(s,flag)
 % 题目：小波变换时频图绘制
