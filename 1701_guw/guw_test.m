@@ -12,12 +12,12 @@
 % 作者：马骋
 % 时间：2016.12.30
 
-%% 测试-1
+%% 测试-1   
 
 clc,clear,close all
 s = guw();
-s.input(1);
-s.myfilter(0);                                                                   % 滤波器
+s.input(0);                                                                     % 频谱范围设置为 3000 kHz
+s.myfilter(0);                                                                  % 滤波器，设置5000-6000 不再调整
 s.timePlot(0);                                                                    % 时域绘图，绘制包络
 s.freqPlot();                                                                   % 频域绘图，无频响函数
 s.mycwt(1);                                                                     % 小波分析，显示对话框

@@ -676,6 +676,29 @@ saveas(gcf,filename);
 
 end % saveGraph
 
+function saveGraph2()
+% 题目：保存gcf图像
+% 功能：
+%       自定义图片格式
+%       自定义图片文件名编号
+% 时间：2017.01.05
+
+prompt0 = {                                                         % 对话框参数
+    '编号',1
+    '图片格式（png/jpg）', 'png'
+};
+
+dlg0.title = '图像保存';
+dlg0.save = 'saveGraph';
+para0 = tools.paradlg(prompt0,dlg0);
+
+filename = ['iamge-',num2str(para0{1}),'.',para0{2}];
+% print(gcf,'-dpng','abc.png') 
+saveas(gcf,filename);  
+
+end % saveGraph
+
+
 function plot0()
 % 题目：最简正弦绘图示例
 % 时间：2017.01.08
@@ -874,7 +897,7 @@ y1 = [1 1]*max(X)/sqrt(2);
 x2 = fz;                                                                        % 信号
 y2 = X;
 
-[x0,y0,~,~] = intersections(x1,y1,x2,y2);                                       % 交点求解
+[x0,y0,~,~] = tools.intersections(x1,y1,x2,y2);                                       % 交点求解
 band3db = x0(2)-x0(1);                                                          % 带宽计算
 
 if flag                                                                         % 图像绘制检查

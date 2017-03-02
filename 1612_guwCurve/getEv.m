@@ -15,7 +15,8 @@
 %% 数据读取
 
 clc,clear,close all
-filename = 's05_f500.mat';                                                      % 读取试验数据
+filename = tools.getfile();
+% filename = 's05c07_f500.mat';                                                      % 读取试验数据
 load(filename);                                                                 % 载入数据
 
 %% 数据预处理
@@ -29,14 +30,14 @@ n_f = size(wn,2);                                                               
 fk = Frequency_Hz'/1e3;                                                         % 频率向量
 fkn = repmat(fk,1,n_mode);                                                      % 频率数据矩阵
 
-figure
-subplot(211)                                                                    % 原始数据绘图
-plot(fkn,wn','-*')
-tools.xyt({'Frequency kHz','wave number','原始-波数'})
-
-subplot(212)
-plot(fkn,Ev','-*')
-tools.xyt({'Frequency kHz','Energy velocity m/s','原始-能量速度'})
+% figure
+% subplot(211)                                                                    % 原始数据绘图
+% plot(fkn,wn','-*')
+% tools.xyt({'Frequency kHz','wave number','原始-波数'})
+% 
+% subplot(212)
+% plot(fkn,Ev','-*')
+% tools.xyt({'Frequency kHz','Energy velocity m/s','原始-能量速度'})
 
 %% 模态匹配
 
@@ -44,17 +45,8 @@ tools.xyt({'Frequency kHz','Energy velocity m/s','原始-能量速度'})
 wn2 = fun_sort(wn,I)';                                                          % 冲排列 wn，Ev
 Ev2 = fun_sort(Ev,I)';
 
-% figure
-% subplot(211)                                                                    % 冲排列数据绘图
-% plot(fkn,wn2,'-*')
-% tools.xyt({'Frequency kHz','wave number','模态分组-波数'})
-% 
-% subplot(212)
-% plot(fkn,Ev2,'-*')
-% tools.xyt({'Frequency kHz','Energy velocity m/s','模态分组-能量速度'})
-
 %% 去除空数据，重新绘图
-
+% 
 figure                                                                          % 去除空数据绘图
 subplot(211)
 fun_plot0(fkn,wn2,'-*')
@@ -63,3 +55,9 @@ tools.xyt({'Frequency kHz','wave number','波数'})
 subplot(212)
 fun_plot0(fkn,Ev2,'-*')
 tools.xyt({'Frequency kHz','Energy velocity m/s','能量速度'})
+
+figure
+fun_plot0(fkn,Ev2,'-')
+tools.xyt({'Frequency kHz','Energy velocity m/s','能量速度'})
+
+ylim([0 5500])

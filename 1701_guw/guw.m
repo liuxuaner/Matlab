@@ -73,6 +73,7 @@ strUpdatelog = {
     '2016.12.30,信号处理技术集成；'
     '2016.12.31,基本功能模块开发：myfilter，myHilbert，freqAnalysis，timePlotfreqPlot；'
     '2017.01.03,对话框分离，集成了小波分析mycwt；'
+    '2017.02.24，解决小波分析时频谱峰值拾取问题；'
     };
 
 for iloop = 1:length(strUpdatelog)
@@ -404,6 +405,17 @@ totalscal = para0{4};                                                           
 fzk_lim = para0{5};                                                             % 时频图显示的频率范围
 flag_pcdisp = para0{6};                                                         % 是否绘制频散曲线
 
+% -------------读取频散曲线-------------
+
+if flag_pcdisp
+    filename = tools.getfile();
+    open(filename)
+    h=findobj(gca,'Type','Line');                                               % 提取曲线数据对象
+    x = get(h,'xdata');                                                         % 坐标数据cell数据
+    y = get(h,'ydata');    
+    close(gcf)
+end
+
 % -------------信号重采样-------------
 inp_res = resample(s.inp,p,q);                                                  % 发射信号重采样
 out_res = cell(s.N_ch-1,1);
@@ -426,8 +438,8 @@ a = totalscal:-1:0.2;
 scal = cparam./a;                                                               % 得到各个尺度，以使转换得到频率序列为等差序列
 
 coefs = cell(s.N_ch-1,1);
-index_coef_max = cell(s.N_ch-1,1);
-coef_max = cell(s.N_ch-1,1);
+% index_coef_max = cell(s.N_ch-1,1);
+% coef_max = cell(s.N_ch-1,1);
 
 tic
 for iloop = 1:s.N_ch-1
@@ -435,7 +447,7 @@ for iloop = 1:s.N_ch-1
     f=scal2frq(scal,wavename,1/fs_res);                                         % 将尺度转换为频率
     fk = f/1e3;                                                                 % 频率，kHz
 
-    [coef_max{iloop},index_coef_max{iloop}] = max(max(abs(coefs{iloop})));      % 小波系数最大的点    
+%     [coef_max{iloop},index_coef_max{iloop}] = max(max(abs(coefs{iloop})));      % 小波系数最大的点    
 
 end
 toc                                                                             % 计算耗时
@@ -463,7 +475,7 @@ for iloop = 1:s.N_ch-1
     set(gca,'xdir','reverse')
     
     subplot(5,4,[10:12,14:16,18:20])                                            % 占用子图位置
-    imagesc(t_res_us,fk,abs(coefs{iloop}));                                    % 绘制色谱图
+    imagesc(t_res_us,fk,abs(coefs{iloop}));                                     % 绘制色谱图
     colorbar('east');                                                           % 色条在坐标轴内部显示，以便对齐
     tools.xyt({'时间 t/\mu s','频率 f/kHz',''})                                 % --小波时频图
     xlim(t_us_lim)
@@ -471,17 +483,16 @@ for iloop = 1:s.N_ch-1
     set(gca, 'YDir', 'normal')
     tools.white;
     
-    hold on 
-    tools.xline([t_res_us(index_coef_max{iloop}),0],'m-');                      % 峰值出处绘制直线
-    tools.xline([0 s.fzk_Ymax{iloop}],'m-');        
-    
-    tools.xGrid(t_res_us(index_coef_max{iloop}),45);                            % 峰值出处绘制直线
-    tools.yGrid(s.fzk_Ymax{iloop});                                             % 同上
+%     hold on 
+%     tools.xline([t_res_us(index_coef_max{iloop}),0],'m-');                      % 峰值出处绘制直线
+%     tools.xline([0 s.fzk_Ymax{iloop}],'m-');        
+%     
+%     tools.xGrid(t_res_us(index_coef_max{iloop}),45);                            % 峰值出处绘制直线
+%     tools.yGrid(s.fzk_Ymax{iloop});                                             % 同上
 end
 
 % 频散曲线叠绘
 if flag_pcdisp
-    load('D10_F1000_L.mat')                                                     % 纵波频散曲线数据
     hold on
     for iloop = 1:length(x)
         ytemp = 1./y{iloop};                                                    % 走时计算
@@ -491,6 +502,31 @@ if flag_pcdisp
 end
 
 s.dispAmpl();                                                                   % 幅值显示
+
+% --------------------peak ridge 标注------------------------------------
+
+xyRegion = ginput;                                                              % 通过鼠标点选适当的区域进行计算
+
+tof_us_lim = xyRegion(:,1);                                                     % 时间范围
+freq_kHz_lim = xyRegion(:,2);                                                   % 频率范围
+
+coef_selceted = coefs{1};                                                       % 筛选的色谱图
+
+index_t = (t_res_us < tof_us_lim(1)) | (t_res_us > tof_us_lim(2));              % 时间和频率的指标
+index_freq = (fk < freq_kHz_lim(2) ) | (fk > freq_kHz_lim(1));
+
+coef_selceted(index_freq,:) = 0;                                                % 置零
+coef_selceted(:,index_t) = 0;                                                   % 置零
+
+[~,index_coef_tof] = max(max(abs(coef_selceted)));                              % 最大值对应的走时    
+[~,index_coef_freq] = max(max(abs(coef_selceted')));                            % 最大值对应的频率   
+
+% figure,imagesc(t_res_us,fk,abs(coef_selceted));                               % 为了验证数据处理效果，绘制图像
+hold on 
+tools.xline([t_res_us(index_coef_tof),0],'m-');                                 % tof峰值处绘制直线
+tools.xline([0 fk(index_coef_freq)],'m-');        
+tools.xGrid(t_res_us(index_coef_tof),45);                                       % 频率峰值处绘制直线
+tools.yGrid(fk(index_coef_freq));                
 
 end
 end % method
